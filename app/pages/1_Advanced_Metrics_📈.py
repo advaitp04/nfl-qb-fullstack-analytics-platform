@@ -93,7 +93,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-    html, body, p, div, span, label, h1, h2, h3, h4, h5, h6 {
+    html, body, p, label, h1, h2, h3, h4, h5, h6 {
         font-family: 'Inter', sans-serif !important;
     }   
     </style>
