@@ -411,7 +411,7 @@ def show_epa_panic_play_plot(df):
     fig.add_hline(y=mean_panic)
 
     #Plot chart
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
 def show_advanced_qb_comparison(filtered_df, qb1, qb2): 
     #edge case if dropback filter is set to the max and only one QB shows up on the volatility v. efficiency chart
@@ -625,7 +625,7 @@ def show_redzone_td_chart(filtered_df: pd.DataFrame, top_n:int) -> None:
         showgrid=False
     )
 
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
 def show_3rd_down_conversion_chart(filtered_df:pd.DataFrame, top_n: int) -> None:
     df = filtered_df.rename(columns={
@@ -722,7 +722,7 @@ def show_3rd_down_conversion_chart(filtered_df:pd.DataFrame, top_n: int) -> None
         showgrid=False
     )
 
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
 def generate_qb_pressure_profile_desc(qb_data, percentile_cols):
     #Convert percentile slice to numeric type before calling nlargest and nsmallest
@@ -857,7 +857,7 @@ def show_qb_pressure_profile(filtered_df):
     #reduces hover clutter
     fig.update_traces(hovertemplate="%{y}: %{x}th percentile<extra></extra>")
 
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
     st.caption("Traits represent percentile rankings relative to other qualified QBs in the selected season.")
 
