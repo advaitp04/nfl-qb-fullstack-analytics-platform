@@ -764,13 +764,13 @@ def generate_qb_pressure_profile_desc(qb_data, percentile_cols):
     templates = [
         f"{adj_1.capitalize()} {strength_1.lower()} and {adj_2} {strength_2.lower()}, but {adj_3} {weakness_1.lower()}.",
 
-        f"Shows {adj_1} {strength_1.lower()} and {adj_2} {strength_2.lower()}, though {weakness_1.lower()} is {adj_3}.",
+        f"Shows {adj_1} {strength_1.lower()} and {adj_2} {strength_2.lower()}, though {weakness_1.lower()} is {adj_3.lower()}.",
 
-        f"Excels in {strength_1.lower()} and {strength_2.lower()}, but {weakness_1.lower()} remains {adj_3}.",
+        f"Excels in {strength_1.lower()} and {strength_2.lower()}, but {weakness_1.lower()} remains {adj_3.lower()}.",
 
-        f"{strength_1.capitalize()} and {strength_2.lower()} stand out as strengths, though {weakness_1.lower()} is {adj_3}.",
+        f"{strength_1.capitalize()} and {strength_2.lower()} stand out as strengths, though {weakness_1.lower()} is {adj_3.lower()}.",
 
-        f"A {adj_1} performer in {strength_1.lower()} with {adj_2} {strength_2.lower()}, but {weakness_1.lower()} is {adj_3}."
+        f"A {adj_1} performer in {strength_1.lower()} with {adj_2} {strength_2.lower()}, but {weakness_1.lower()} is {adj_3.lower()}."
     ]
 
     qb_description = random.choice(templates)
