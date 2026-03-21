@@ -13,6 +13,5 @@ jobs:
     steps:
       - name: Ping Streamlit App
         run: |
-          curl -L --silent \
+          curl --silent \
           https://advait-patil-nfl-qb-cortisol-analytics.streamlit.app/script-health-check > /dev/null || true 
-          
