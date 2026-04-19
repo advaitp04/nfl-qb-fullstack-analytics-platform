@@ -7,7 +7,7 @@ def extract_data():
     Output:
         qb_data_by_season -> regular-season QB rows for a single season
     """
-    nfl_seasons = [2021, 2022, 2023, 2024, 2025]
+    nfl_seasons = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
     qb_data_by_season = {}
 
