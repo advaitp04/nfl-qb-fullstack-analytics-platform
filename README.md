@@ -1,13 +1,4 @@
 # NFL QB Cortisol Index: Evaluating Quarterback Stability Using NFL Data
----
-title: NFL Cortisol Analytics
-emoji: 🏈
-colorFrom: blue
-colorTo: red
-sdk: streamlit
-app_file: app/Home.py
-pinned: false
----
 
 ## Introduction
 This project is an end-to-end sports analytics platform that ranks NFL quarterbacks using a custom QB Cortisol Index, designed to measure offensive stability and stress-inducing mistakes. The index is built using engineered metrics derived from NFL player statistics and play-by-play data across the last five seasons. The analysis and dashboard were developed using Python, Pandas, Plotly, Altair, and Streamlit, with the project hosted on GitHub.
