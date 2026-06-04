@@ -4,7 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile.api
     ports:
-      - "8000:8000"
+      - "8001:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
 
   dashboard:
     build:
@@ -12,3 +16,18 @@ services:
       dockerfile: dockerfile
     ports:
       - "7860:7860"
+    volumes:
+      - .:/app
+  
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password 
+      POSTGRES_DB: nfl_cortisol 
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:

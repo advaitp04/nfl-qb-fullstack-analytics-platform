@@ -1,4 +1,6 @@
 from pathlib import Path
+from backend.db.database import engine
+from sqlalchemy import text 
 import pandas as pd
 
 DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "processed" / "qb_master.csv"
@@ -10,21 +12,58 @@ situational_metric_cols = [
     "third_down_conversion_rate",
 ]
 
+def query_postgres(query, params=None):
+    with engine.connect() as conn:
+        return pd.read_sql(text(query), conn, params=params or {})
+    
 def load_data():
-    df = pd.read_csv(DATA_PATH)
+    try:
+        df = pd.read_sql("SELECT * FROM qb_metrics", engine)
+        print("Loaded data from Postgres")
+    except Exception as e:
+        df = pd.read_csv(DATA_PATH)
+        print(f"Postgres unavailable, falling back to CSV: {e}")
+        df = pd.read_csv(DATA_PATH)
 
-    # These columns can be missing when a QB does not have enough qualifying plays.
+    return clean_data(df)
+
+def clean_data(df):
     existing_metric_cols = [
         col for col in situational_metric_cols if col in df.columns
     ]
 
     df[existing_metric_cols] = df[existing_metric_cols].fillna(0)
 
-    return df
+    return df.where(pd.notnull(df), None)
 
-def get_qbs():
-    df = load_data()
-    return df.head(100).to_dict(orient="records")
+def get_qbs(season=None, limit=100):
+    try:
+        query= """
+            SELECT *
+            FROM qb_metrics
+            WHERE (:season IS NULL OR season = :season)
+            LIMIT :limit
+        """
+
+        df = query_postgres(
+            query,
+            {
+                "season":season,
+                "limit": limit,
+            }
+        )
+
+        print("Loaded filtered QB data from Postgres")
+    except Exception as e:
+        print(f"Postgres unavailable, falling back to CSV: {e}")
+        df = pd.read_csv(DATA_PATH)
+
+        if season is not None and "season" in df.columns:
+            df = df[df["season"] == season]
+
+        df = df.head(limit)
+
+    return clean_data(df).to_dict(orient="records")
 
 def get_cortisol_rankings():
     df = load_data()
@@ -41,18 +80,38 @@ def get_cortisol_rankings():
         .to_dict(orient="records")
     )
 
-def get_cortisol_rankings_by_season(season: int):
-    df = load_data()
-    score_col = "adjusted_cortisol_score" if "adjusted_cortisol_score" in df.columns else "cortisol_score"
+def get_cortisol_rankings_by_season(season=None, limit=50):
+    score_col = "adjusted_cortisol_score"
 
-    if "season" in df.columns:
-        df = df[df["season"] == season]
+    try:
+        query= f"""
+            SELECT *
+            FROM qb_metrics
+            WHERE (:season IS NULL or season = :season)
+            ORDER BY {score_col} DESC
+            LIMIT :limit 
+        """
 
-    return (
-        df.sort_values(score_col, ascending=False)
-        .head(50)
-        .to_dict(orient="records")
-    )
+        df = query_postgres(
+            query, 
+            {
+                "season": season,
+                "limit": limit,
+            }
+        )
+
+        print("Loaded filtered rankings from Postgres")
+
+    except Exception as e:
+        print(f"Postgres unavailable, falling back to CSV: {e}")
+        df = pd.read_csv(DATA_PATH)
+
+        if season is not None and "season" in df.columns:
+            df = df[df["season"] == season]
+
+        df = df.sort_values(score_col, ascending=False).head(limit)
+
+    return clean_data(df).to_dict(orient="records")
 
 def get_qb_by_name(name: str):
     df = load_data()
