@@ -1,5 +1,5 @@
 from pydantic import BaseModel 
-from typing import Optional 
+from typing import Optional, List 
 
 class QBRecord(BaseModel):
     player_display_name: Optional[str] = None
@@ -21,6 +21,14 @@ class AdvancedMetricsRecord(BaseModel):
     third_and_long_conversion_rate: Optional[float] = None
     adjusted_cortisol_score: Optional[float] = None
     adjusted_cortisol_rank: Optional[int] = None
+
+class QBListResponse(BaseModel):
+    count: int
+    results: list[QBRecord]
+
+class AdvancedMetricsListResponse(BaseModel):
+    count: int
+    results: list[AdvancedMetricsRecord]
 
 class HealthResponse(BaseModel):
     status: str

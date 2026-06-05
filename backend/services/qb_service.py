@@ -46,12 +46,12 @@ def clean_data(df):
 
     return df.where(pd.notnull(df), None)
 
-def get_qbs(season=None, team=None, limit=100, offset=0):
+def get_qbs(season=None, season_type=None, team=None, limit=100, offset=0):
     try:
         query= """
             SELECT *
             FROM qb_metrics
-            WHERE (:season IS NULL OR season = :season) AND (:team IS NULL OR team = :team)
+            WHERE (:season IS NULL OR season = :season) AND (:season_type IS NULL OR season_type = :season_type) AND (:team IS NULL OR team = :team)
             LIMIT :limit
             OFFSET :offset 
         """
@@ -60,6 +60,7 @@ def get_qbs(season=None, team=None, limit=100, offset=0):
             query,
             {
                 "season":season,
+                "season_type": season_type,
                 "team": team,
                 "limit": limit,
                 "offset": offset,
@@ -73,6 +74,9 @@ def get_qbs(season=None, team=None, limit=100, offset=0):
 
         if season is not None and "season" in df.columns:
             df = df[df["season"] == season]
+        
+        if season_type is not None and "season_type" in df.columns:
+            df = df[df["season_type"] == season_type]
 
         if team is not None and "team" in df.columns:
             df = df[df["team"] == team]
@@ -81,23 +85,26 @@ def get_qbs(season=None, team=None, limit=100, offset=0):
 
     return clean_data(df).to_dict(orient="records")
 
-def get_cortisol_rankings_by_season(season=None, limit=50):
+def get_cortisol_rankings_by_season(season=None, season_type=None, limit=50, offset=0):
     score_col = "adjusted_cortisol_score"
 
     try:
         query= f"""
             SELECT *
             FROM qb_metrics
-            WHERE (:season IS NULL or season = :season)
+            WHERE (:season IS NULL or season = :season) AND (:season_type IS NULL or season_type = :season_type)
             ORDER BY {score_col} DESC
             LIMIT :limit 
+            OFFSET :offset
         """
 
         df = query_postgres(
             query, 
             {
                 "season": season,
+                "season_type": season_type,
                 "limit": limit,
+                "offset": offset,
             }
         )
 
@@ -110,7 +117,11 @@ def get_cortisol_rankings_by_season(season=None, limit=50):
         if season is not None and "season" in df.columns:
             df = df[df["season"] == season]
 
-        df = df.sort_values(score_col, ascending=False).head(limit)
+        if season_type is not None and "season_type" in df.columns:
+            df = df[df["season_type"] == season_type]
+
+        df = df.sort_values(score_col, ascending=False)
+        df = df.iloc[offset:offset + limit]
 
     return clean_data(df).to_dict(orient="records")
 
@@ -154,7 +165,7 @@ def get_qb_by_name(name: str, season=None):
 
     return clean_data(df).to_dict(orient="records")
 
-def get_advanced_metrics(season: None, limit=100):
+def get_advanced_metrics(season: None, season_type: None, limit=100, offset=0):
     try:
         query = """ 
                 SELECT 
@@ -172,12 +183,15 @@ def get_advanced_metrics(season: None, limit=100):
                 FROM qb_metrics
                 WHERE (:season IS NULL OR season = :season)
                 LIMIT :limit 
+                OFFSET :offset
                 """
         df = query_postgres(
             query,
             {
                 "season": season,
+                "season_type": season_type,
                 "limit": limit,
+                "offset": offset,
             }
         )
 
