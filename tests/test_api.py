@@ -91,3 +91,27 @@ def test_qbs_with_query_params():
     data = response.json()
     assert data["count"] <= 10
     assert len(data["results"]) <= 10
+
+def test_qbs_with_season_type():
+    response = client.get("/api/qbs?season_type=REG&limit=10")
+    assert response.status_code == 200
+    data = response.json()
+    assert "results" in data 
+    for qb in data["results"]:
+        assert qb["season_type"] == "REG"
+
+def test_qbs_offset_changes_results():
+    response1 = client.get("/api/qbs?limit=5&offset=0")
+    response2 = client.get("/api/qbs?limit=5&offset=5")
+    data1 = response1.json()
+    data2 = response2.json()
+    assert data1["results"] != data2["results"]
+
+def test_empty_team_filter():
+    response = client.get("/api/qbs?team=FAKETEAM")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["count"] == 0
+    assert data["results"] == []
+
+

@@ -210,3 +210,9 @@ def get_advanced_metrics(season: None, season_type: None, limit=100, offset=0):
         df = df.head(limit)
 
     return clean_data(df).to_dict(orient="records")
+
+def build_response(results):
+    return {
+        "count": len(results),
+        "results": results
+    }

@@ -91,6 +91,10 @@ The final Cortisol Index score combines these metrics into a composite score use
 
 - Pandas
 
+## Database
+
+- PostgreSQL
+
 ## Visualization Libraries
 
 - Plotly
@@ -101,7 +105,7 @@ The final Cortisol Index score combines these metrics into a composite score use
 - Pytest
 - GitHub Actions
 
-## Containerization
+## Containerization & Infrastructure
 
 - Docker
 - Docker Compose
