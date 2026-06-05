@@ -13,16 +13,36 @@ def test_qbs_endpoint():
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-def test_cortisol_rankings_endpoint():
-    response = client.get("/api/rankings/cortisol")
+def test_qbs_with_query_params():
+    response = client.get("/api/qbs?season=2023&limit=10")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+    assert len(response.json()) <= 10
+
+
+def test_cortisol_rankings_with_query_params():
+    response = client.get("/api/rankings/cortisol?season=2023&limit=10")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+    assert len(response.json()) <= 10
+
+
+def test_qb_by_name():
+    response = client.get("/api/qbs/mahomes")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-def test_cortisol_rankings_by_season_endpoint():
-    response = client.get("/api/rankings/cortisol/2023")
+def test_invalid_qb_name():
+    response = client.get("/api/qbs/thisqbdoesnotexist")
+    assert response.status_code == 200
+    assert response.json() == []
+
+def test_advanced_metrics_endpoint():
+    response = client.get("/api/advanced-metrics?season=2023&limit=10")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-    
+    assert len(response.json()) <= 10
+
 def test_health_endpoint():
     response = client.get("/api/health")
     assert response.status_code == 200

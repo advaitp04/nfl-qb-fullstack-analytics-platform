@@ -11,7 +11,17 @@ situational_metric_cols = [
     "third_and_long_conversion_rate",
     "third_down_conversion_rate",
 ]
-
+advanced_metric_cols = [
+    "player_display_name",
+    "season", 
+    "team",
+    "epa_per_dropback",
+    "redzone_td_rate",
+    "third_down_conversion_rate",
+    "third_down_regular_conversion_rate",
+    "adjusted_cortisol_score",
+    "adjusted_cortisol_rank"
+]
 def query_postgres(query, params=None):
     with engine.connect() as conn:
         return pd.read_sql(text(query), conn, params=params or {})
@@ -65,21 +75,6 @@ def get_qbs(season=None, limit=100):
 
     return clean_data(df).to_dict(orient="records")
 
-def get_cortisol_rankings():
-    df = load_data()
-
-    score_col = (
-        "adjusted_cortisol_score"
-        if "adjusted_cortisol_score" in df.columns
-        else "cortisol_score"
-    )
-
-    return (
-        df.sort_values(score_col, ascending=False)
-        .head(50)
-        .to_dict(orient="records")
-    )
-
 def get_cortisol_rankings_by_season(season=None, limit=50):
     score_col = "adjusted_cortisol_score"
 
@@ -113,21 +108,84 @@ def get_cortisol_rankings_by_season(season=None, limit=50):
 
     return clean_data(df).to_dict(orient="records")
 
-def get_qb_by_name(name: str):
-    df = load_data()
+def get_qb_by_name(name: str, season=None):
+    try:
+        query = """
+            SELECT *
+            FROM qb_metrics 
+            WHERE LOWER(player_display_name) LIKE LOWER(:name) AND (:season IS NULL OR season = :season)
+        """
 
-    name_col = (
-        "player_display_name"
-        if "player_display_name" in df.columns
-        else "player_name"
-    )
+        df = query_postgres(
+            query,
+            {
+                "name": f"%{name}%",
+                "season": season,
+            }
+        )
 
-    result = df[
-        df[name_col]
-        .astype(str)
-        .str.lower()
-        .str.contains(name.lower(), na=False)
-    ]
+        print("Loaded QB search from Postgres")
 
-    return result.to_dict(orient="records")
+    except Exception as e:
+        print(f"Postgres unavailable, falling back to CSV: {e}")
+        df = pd.read_csv(DATA_PATH)
 
+        name_col = (
+            "player_display_name"
+            if "player_display_name" in df.columns
+            else "player_name"
+        )
+
+        df = df[
+            df[name_col]
+            .astype(str)
+            .str.lower()
+            .str.contains(name.lower(), na=False)
+        ]
+
+        if season is not None and "season" in df.columns:
+            df = df[df["season"]==season]
+
+    return clean_data(df).to_dict(orient="records")
+
+def get_advanced_metrics(season: None, limit=100):
+    try:
+        query = """ 
+                SELECT 
+                player_display_name,
+                season,
+                team,
+                epa_per_dropback,
+                redzone_td_rate,
+                third_down_conversion_rate,
+                third_down_regular_conversion_rate,
+                third_and_long_conversion_rate,
+                adjusted_cortisol_score,
+                adjusted_cortisol_rank
+                FROM qb_metrics
+                WHERE (:season IS NULL OR season = :season)
+                LIMIT :limit 
+                """
+        df = query_postgres(
+            query,
+            {
+                "season": season,
+                "limit": limit,
+            }
+        )
+
+        print("Loaded advanced metrics from Postgres")
+
+    except Exception as e:
+        print(f"Postgres unavailable, falling back to CSV: {e}")
+        df = pd.read_csv(DATA_PATH)
+
+        cols = [col for col in advanced_metric_cols if col in df.columns]
+        df = df[cols]
+
+        if season is not None and "season" in df.columns:
+            df = df[df["season"] == season]
+
+        df = df.head(limit)
+
+    return clean_data(df).to_dict(orient="records")
