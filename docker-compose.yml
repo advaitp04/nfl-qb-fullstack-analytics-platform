@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/nfl_cortisol
     ports:
       - "8001:8000"
     volumes:
@@ -14,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile
+    environment:
+      API_BASE_URL: http://api:8000
     ports:
       - "7860:7860"
     volumes:

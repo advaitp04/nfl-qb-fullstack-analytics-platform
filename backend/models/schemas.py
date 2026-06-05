@@ -6,8 +6,14 @@ class QBRecord(BaseModel):
     season: Optional[int] = None 
     season_type: Optional[str] = None
     team: Optional[str] = None 
+    total_dropbacks: Optional[int] = None
     adjusted_cortisol_score: Optional[float] = None 
     adjusted_cortisol_rank: Optional[int] = None 
+    cortisol_score: Optional[float] = None
+    cortisol_rank: Optional[int] = None
+    turnover_score: Optional[float] = None
+    drive_score: Optional[float] = None
+    success_score: Optional[float] = None
 
 class AdvancedMetricsRecord(BaseModel):
     player_display_name: Optional[str] = None 
@@ -21,6 +27,12 @@ class AdvancedMetricsRecord(BaseModel):
     third_and_long_conversion_rate: Optional[float] = None
     adjusted_cortisol_score: Optional[float] = None
     adjusted_cortisol_rank: Optional[int] = None
+    total_dropbacks: Optional[int] = None
+    turnover_score: Optional[float] = None
+    drive_score: Optional[float] = None
+    success_score: Optional[float] = None
+    negative_epa_rate: Optional[float] = None
+    panic_play_rate: Optional[float] = None
 
 class QBListResponse(BaseModel):
     count: int

@@ -1,7 +1,9 @@
 from pathlib import Path
+from api_client import fetch_qbs
 import streamlit as st
 import pandas as pd 
 import altair as alt 
+import requests
 
 project_root = Path(__file__).resolve().parents[1]
 data_path = project_root / "data" / "processed" / "qb_master.csv"
@@ -155,8 +157,7 @@ st.markdown(
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv(data_path)
-    return df
+    return fetch_qbs()
 
 def show_shared_filters(df):
     col1, col2 = st.columns(2)

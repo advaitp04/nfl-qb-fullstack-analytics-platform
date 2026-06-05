@@ -19,9 +19,34 @@ advanced_metric_cols = [
     "redzone_td_rate",
     "third_down_conversion_rate",
     "third_down_regular_conversion_rate",
+    "total_dropbacks",
     "adjusted_cortisol_score",
-    "adjusted_cortisol_rank"
+    "adjusted_cortisol_rank",
+    "total_dropbacks",
+    "turnover_score",
+    "drive_score",
+    "success_score",
+    "negative_epa_rate",
+    "panic_play_rate",
 ]
+
+allowed_sort_columns = [
+    "season",
+    "team",
+    "player_display_name",
+    "total_dropbacks",
+    "adjusted_cortisol_score",
+    "adjusted_cortisol_rank",
+    "cortisol_score",
+    "cortisol_rank",
+    "epa_per_dropback",
+    "negative_epa_rate",
+    "panic_play_rate",
+    "third_down_conversion_rate",
+    "third_and_long_conversion_rate",
+    "redzone_td_rate",
+]
+
 def query_postgres(query, params=None):
     with engine.connect() as conn:
         return pd.read_sql(text(query), conn, params=params or {})
@@ -46,12 +71,15 @@ def clean_data(df):
 
     return df.where(pd.notnull(df), None)
 
-def get_qbs(season=None, season_type=None, team=None, limit=100, offset=0):
+def get_qbs(season=None, season_type=None, team=None, limit=100, offset=0, sort_by="adjusted_cortisol_score", sort_order="desc"):
+    sort_by, sort_order = validate_sort(sort_by, sort_order)
+
     try:
-        query= """
+        query= f"""
             SELECT *
             FROM qb_metrics
             WHERE (:season IS NULL OR season = :season) AND (:season_type IS NULL OR season_type = :season_type) AND (:team IS NULL OR team = :team)
+            ORDER BY {sort_by} {sort_order}
             LIMIT :limit
             OFFSET :offset 
         """
@@ -80,6 +108,11 @@ def get_qbs(season=None, season_type=None, team=None, limit=100, offset=0):
 
         if team is not None and "team" in df.columns:
             df = df[df["team"] == team]
+        
+        ascending = sort_order.lower()=="asc"
+
+        if sort_by in df.columns:
+            df = df.sort_values(sort_by, ascending=ascending)
 
         df = df.iloc[offset: offset + limit]
 
@@ -173,6 +206,12 @@ def get_advanced_metrics(season: None, season_type: None, limit=100, offset=0):
                 season,
                 season_type,
                 team,
+                total_dropbacks,
+                turnover_score,
+                drive_score,
+                success_score,
+                negative_epa_rate,
+                panic_play_rate,
                 epa_per_dropback,
                 redzone_td_rate,
                 third_down_conversion_rate,
@@ -216,3 +255,14 @@ def build_response(results):
         "count": len(results),
         "results": results
     }
+
+def validate_sort(sort_by, sort_order):
+    if sort_by not in allowed_sort_columns:
+        sort_by = "adjusted_cortisol_score"
+    
+    sort_order = sort_order.lower()
+
+    if sort_order not in ["asc", "desc"]:
+        sort_order = "desc"
+    
+    return sort_by, sort_order.upper()

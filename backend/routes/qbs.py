@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query, HTTPException
 from typing import Literal
-from backend.models.schemas import QBRecord, QBListResponse
+from backend.models.schemas import QBListResponse
 from backend.services.qb_service import get_qbs, get_qb_by_name, build_response
 
 router = APIRouter(prefix="/api/qbs", tags=["QBs"])
@@ -11,9 +11,11 @@ def qbs(
     season_type: Literal["REG", "POST"] | None=Query(None, description="Filter by regular season or postseason"),
     team: str | None = Query(None, description="Filter by NFL team (i.e: KC, PHI, etc.)"),
     limit: int = Query(100, ge=1, le=500, description="Maximum number of QB records to return"),
-    offset: int = Query(0, ge=0)
+    offset: int = Query(0, ge=0),
+    sort_by: str = Query("adjusted_cortisol_score"),
+    sort_order: Literal["asc", "desc"] = Query("desc")
 ):
-    results =  get_qbs(season=season, season_type=season_type, team=team, limit=limit, offset=offset)
+    results =  get_qbs(season=season, season_type=season_type, team=team, limit=limit, offset=offset, sort_by=sort_by, sort_order=sort_order)
     return build_response(results)
 
 @router.get("/{name}", response_model=QBListResponse)

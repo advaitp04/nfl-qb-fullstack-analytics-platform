@@ -114,4 +114,10 @@ def test_empty_team_filter():
     assert data["count"] == 0
     assert data["results"] == []
 
-
+def test_qbs_sorting_by_dropbacks():
+    response = client.get("/api/qbs?season=2023&season_type=REG&sort_by=total_dropbacks&sort_order=desc&limit=10")
+    assert response.status_code == 200
+    data = response.json()
+    results = data["results"]
+    dropbacks = [qb["total_dropbacks"] for qb in results]
+    assert dropbacks == sorted(dropbacks, reverse=True)

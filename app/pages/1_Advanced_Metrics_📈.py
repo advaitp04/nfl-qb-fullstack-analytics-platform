@@ -1,4 +1,5 @@
 from pathlib import Path
+from api_client import fetch_advanced_metrics
 import streamlit as st
 import pandas as pd 
 import random
@@ -866,8 +867,7 @@ def show_qb_pressure_profile(filtered_df):
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv(data_path)
-    return df
+    return fetch_advanced_metrics()
 
 def main():
     #Set up title 
