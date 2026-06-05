@@ -45,6 +45,8 @@ Major engineering-focused additions include:
 - Reusable response helper utilities
 - Structured backend route organization
 - Graceful CSV fallback handling for local development/testing
+- Streamlit frontend fully integrated with FastAPI backend APIs
+- API-driven frontend architecture replacing direct CSV-based frontend access
 
 These upgrades significantly improved the platform’s scalability, maintainability, portability, and production-readiness.
 
@@ -146,16 +148,18 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 The platform is structured as a modular multi-service analytics system.
 
 ```text
-Streamlit Dashboard
-        ↓
+Streamlit Frontend Dashboard
+            ↓
+Reusable API Client Layer
+            ↓
 FastAPI Backend API
-        ↓
-Service Layer / Analytics Engine
-        ↓
+            ↓
+Service Layer / Query Logic
+            ↓
 PostgreSQL Database
-        ↓
+            ↓
 Dockerized Multi-Service Infrastructure
-````
+```
 
 ---
 
@@ -237,6 +241,7 @@ Supported backend query functionality includes:
 * Team filtering
 * Pagination using `limit` and `offset`
 * Typed response validation with Pydantic schemas
+* Dynamic sorting using `sort_by` and `sort_order`
 
 ---
 
@@ -258,6 +263,26 @@ Supported backend query functionality includes:
 ```
 
 ---
+# Frontend-Backend Integration
+
+The Streamlit dashboard consumes data exclusively through FastAPI REST endpoints rather than directly accessing CSV datasets.
+
+This architecture introduces a clear separation between:
+
+- frontend presentation logic
+- backend business/query logic
+- database persistence
+
+The frontend communicates with the backend through a reusable API client layer that handles:
+
+- endpoint requests
+- pagination
+- query parameter construction
+- response parsing
+- API-driven data retrieval
+
+This design improves scalability, maintainability, and portability while more closely mirroring modern full-stack software architectures.
+
 
 # Local Development Setup
 
@@ -352,6 +377,8 @@ python -m pytest
 
 GitHub Actions workflows automatically execute tests on pushes and pull requests to help ensure backend stability and reliability.
 
+The backend API layer includes automated validation for filtering, pagination, sorting, and response contracts using FastAPI query validation and Pydantic schemas.
+
 ---
 
 # Containerization
@@ -363,6 +390,8 @@ The project uses Docker Compose to orchestrate a multi-service local development
 * Streamlit dashboard service
 
 Mounted Docker volumes enable hot-reload development workflows while preserving PostgreSQL data persistence.
+
+Docker Compose networking enables internal service-to-service communication between the Streamlit frontend, FastAPI backend, and PostgreSQL database containers.
 
 Run the full stack locally:
 
@@ -390,7 +419,7 @@ https://nflreadr.nflverse.com/index.html
 
 Planned future enhancements include:
 
-* React + TypeScript frontend migration
+* React + TypeScript frontend migration leveraging existing FastAPI backend APIs
 * AWS cloud deployment
 * Redis/API caching layer
 * Authentication and user accounts
