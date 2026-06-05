@@ -1,12 +1,26 @@
-# NFL QB Cortisol Index: Evaluating Quarterback Stability Using NFL Data
+````md
+# NFL QB Cortisol Index: Full-Stack NFL Analytics Platform
 
 ## Introduction
 
-This project is an end-to-end sports analytics platform that ranks NFL quarterbacks using a custom QB Cortisol Index, designed to measure offensive stability and stress-inducing mistakes. The index is built using engineered metrics derived from NFL player statistics and play-by-play data across the last five seasons.
+The NFL QB Cortisol Index is a full-stack sports analytics platform designed to evaluate quarterback stability and offensive consistency using NFL player statistics and play-by-play data.
 
-The project combines sports analytics, backend software engineering, API development, automated testing, and containerized services into a modular cloud-ready analytics platform.
+The platform computes a custom QB Cortisol Index, a composite metric engineered to measure how effectively quarterbacks sustain drives, avoid stress-inducing mistakes, and maintain offensive efficiency across multiple NFL seasons.
 
-The analysis and dashboard were developed using Python, Pandas, Plotly, Altair, Streamlit, FastAPI, Docker, and GitHub Actions.
+Originally developed as a sports analytics dashboard, the project evolved into a modular backend-focused analytics platform featuring:
+
+- FastAPI backend APIs
+- PostgreSQL integration
+- Dockerized multi-service infrastructure
+- Typed API contracts with Pydantic
+- Automated testing with Pytest
+- CI workflows with GitHub Actions
+- Query filtering and pagination
+- Streamlit analytics dashboard
+
+The project combines sports analytics, backend engineering, data engineering, API architecture, and infrastructure orchestration into a production-style analytics system.
+
+## Live Dashboard
 
 [![Streamlit App](https://img.shields.io/badge/Live%20Dashboard-Streamlit-green)](https://advait-patil-nfl-qb-cortisol-analytics.streamlit.app/)
 
@@ -14,37 +28,44 @@ The analysis and dashboard were developed using Python, Pandas, Plotly, Altair, 
 
 # Software Engineering Upgrade
 
-The project has been expanded from a standalone analytics dashboard into a modular, cloud-ready analytics platform with backend APIs, automated testing, CI workflows, and containerized services.
+The project was expanded from a standalone analytics notebook/dashboard into a modular full-stack analytics platform with production-style backend architecture.
 
-New engineering-focused additions include:
+Major engineering-focused additions include:
 
 - FastAPI backend service for REST API endpoints
-- Modular service-layer architecture for analytics logic
+- PostgreSQL integration using SQLAlchemy
+- Modular service-layer backend architecture
+- Pydantic response schemas for typed API contracts
+- Query filtering, validation, and pagination support
+- Dockerized backend, database, and dashboard services
+- Docker Compose orchestration for local multi-service development
 - Automated API testing with Pytest
-- GitHub Actions CI pipeline for continuous integration
-- Dockerized backend and dashboard services
-- Backend preprocessing and serialization handling for missing NFL metrics
+- GitHub Actions CI pipeline
+- Environment-variable based configuration management
+- Reusable response helper utilities
+- Structured backend route organization
+- Graceful CSV fallback handling for local development/testing
 
-These upgrades make the platform easier to test, extend, deploy, and integrate with future full-stack or cloud-native applications.
+These upgrades significantly improved the platform’s scalability, maintainability, portability, and production-readiness.
 
 ---
 
-# Cortisol Index Methodology
+# QB Cortisol Index Methodology
 
-The QB Cortisol Index is designed to measure how consistently a quarterback keeps an offense productive while minimizing stress-inducing plays such as turnovers or drive-killing mistakes.
+The QB Cortisol Index measures how consistently a quarterback sustains offensive productivity while minimizing high-stress plays that negatively impact drives and offensive rhythm.
 
-The index is calculated using normalized performance metrics grouped into three key categories.
+The score is calculated using normalized quarterback performance metrics grouped into three categories.
 
 ## Drive Sustainability
 
-Measures how effectively a quarterback keeps offensive drives alive.
+Measures a quarterback’s ability to maintain offensive drives.
 
 - First Down Rate
 - Completion Percentage
 
 ## Turnover Risk
 
-Captures plays that typically increase fan stress and negatively impact offensive momentum.
+Captures plays that commonly increase fan stress and disrupt offensive momentum.
 
 - Interception Rate
 - Fumble Lost Rate
@@ -58,9 +79,9 @@ Measures overall offensive productivity and efficiency.
 - Yards per Attempt
 - Touchdown Rate
 
-All metrics are normalized and inverted when necessary so that higher values represent more stable quarterback performance.
+Metrics are normalized and inverted when necessary so that higher scores represent more stable quarterback performance.
 
-The final Cortisol Index score combines these metrics into a composite score used to rank quarterbacks across the last five NFL seasons.
+The final QB Cortisol Index combines these normalized metrics into a composite score used to rank quarterbacks across multiple NFL seasons.
 
 ---
 
@@ -72,40 +93,43 @@ The final Cortisol Index score combines these metrics into a composite score use
 
 ---
 
-# Technologies Used
+# Technology Stack
 
-## Programming Languages
+## Languages
 
 - Python
 - SQL
 
-## Backend Development
+## Backend Engineering
 
 - FastAPI
+- SQLAlchemy
+- Pydantic
 
 ## Frontend / Dashboard
 
 - Streamlit
 
-## Data Processing
-
-- Pandas
-
 ## Database
 
 - PostgreSQL
 
-## Visualization Libraries
+## Data Engineering & Processing
+
+- Pandas
+- nflreadpy
+
+## Visualization
 
 - Plotly
 - Altair
 
-## Testing / CI
+## Testing & CI
 
 - Pytest
 - GitHub Actions
 
-## Containerization & Infrastructure
+## Infrastructure & Containerization
 
 - Docker
 - Docker Compose
@@ -119,208 +143,206 @@ The final Cortisol Index score combines these metrics into a composite score use
 
 # System Architecture
 
-The project is structured as a modular analytics platform consisting of multiple components.
+The platform is structured as a modular multi-service analytics system.
 
 ```text
 Streamlit Dashboard
-       ↓
+        ↓
 FastAPI Backend API
-       ↓
-Python Analytics Services
-       ↓
-Processed NFL Dataset
-```
+        ↓
+Service Layer / Analytics Engine
+        ↓
+PostgreSQL Database
+        ↓
+Dockerized Multi-Service Infrastructure
+````
 
-## Repository Structure
+---
+
+# Repository Structure
 
 ```text
 nfl-qb-cortisol-analytics/
 │
-├── app/                     # Streamlit frontend dashboard
-├── backend/                 # FastAPI backend service
-│   ├── services/            # Analytics and data access layer
-│   └── main.py              # API routes
-├── scripts/                 # Data pipeline scripts
-├── tests/                   # Automated API tests
-├── .github/workflows/       # CI workflows
-├── data/processed/          # Generated datasets
-├── Dockerfile.api           # Backend API container
-├── dockerfile               # Streamlit dashboard container
-├── docker-compose.yml       # Multi-container configuration
+├── app/                         # Streamlit dashboard frontend
+├── backend/
+│   ├── db/                      # Database connection layer
+│   ├── models/                  # Pydantic response schemas
+│   ├── routes/                  # FastAPI route modules
+│   ├── services/                # Analytics/business logic layer
+│   ├── utils/                   # Shared backend utilities
+│   └── main.py                  # FastAPI application entrypoint
+│
+├── scripts/                     # Data pipeline scripts
+├── tests/                       # Automated backend API tests
+├── data/processed/              # Generated datasets
+├── .github/workflows/           # CI workflows
+├── Dockerfile.api               # FastAPI backend container
+├── dockerfile                   # Streamlit dashboard container
+├── docker-compose.yml           # Multi-container orchestration
+├── requirements.txt
+├── .env.example
 └── README.md
 ```
 
 ---
 
-# Data Source
-
-nflreadpy is a Python library that provides easy access to NFL play-by-play and player statistics data from the nflverse data repository for analysis and modeling.
-
-## More Info about nflreadpy
-
-1. Installation Details  
-   https://www.piwheels.org/project/nflreadpy/
-
-2. Official Documentation  
-   https://nflreadr.nflverse.com/index.html
-
----
-
 # Data Pipeline
 
-1. Extract NFL Player Data (`scripts/extract_data.py`)
-2. Aggregate Data and Compute QB Metrics (`scripts/build_qb_metrics.py`)
-3. Calculate QB Cortisol Scores (`scripts/cortisol_calculation.py`)
-4. Extract Play-By-Play Data and Compute Advanced Metrics (`scripts/build_advanced_metrics.py`)
-5. Run Data Pipeline and Build Master CSV (`scripts/run_pipeline.py`)
+The analytics pipeline processes NFL player statistics and play-by-play datasets into a unified quarterback analytics dataset.
 
-The pipeline processes multiple NFL datasets and generates a unified quarterback analytics dataset used by both the dashboard and API services.
+Pipeline stages include:
+
+1. Extract NFL player statistics
+2. Aggregate QB performance metrics
+3. Calculate QB Cortisol scores
+4. Compute advanced situational metrics
+5. Generate unified analytics dataset
+6. Load analytics dataset into PostgreSQL
+
+Primary scripts:
+
+* `scripts/extract_data.py`
+* `scripts/build_qb_metrics.py`
+* `scripts/cortisol_calculation.py`
+* `scripts/build_advanced_metrics.py`
+* `scripts/run_pipeline.py`
+* `scripts/load_to_postgres.py`
 
 ---
 
 # REST API
 
-The project includes a FastAPI backend that exposes quarterback analytics through REST API endpoints.
+The platform exposes quarterback analytics through a FastAPI backend service.
 
 ## Available Endpoints
 
-| Endpoint | Description |
-|---|---|
-| `GET /` | API status check |
-| `GET /api/health` | Backend health check |
-| `GET /api/qbs` | Retrieve quarterback records |
-| `GET /api/qbs/{name}` | Retrieve a specific quarterback |
-| `GET /api/rankings/cortisol` | Retrieve top QB Cortisol rankings |
-| `GET /api/rankings/cortisol/{season}` | Retrieve rankings filtered by season |
+| Endpoint                     | Description                              |
+| ---------------------------- | ---------------------------------------- |
+| `GET /`                      | API status check                         |
+| `GET /api/health`            | Backend health check                     |
+| `GET /api/qbs`               | Retrieve quarterback records             |
+| `GET /api/qbs/{name}`        | Retrieve quarterback data by player name |
+| `GET /api/rankings/cortisol` | Retrieve QB Cortisol rankings            |
+| `GET /api/advanced-metrics`  | Retrieve advanced QB analytics           |
 
-## Run API Locally
+---
 
-```bash
-uvicorn backend.main:app --reload
-```
+# API Query Features
 
-Interactive API documentation:
+Supported backend query functionality includes:
 
-```text
-http://localhost:8000/docs
+* Season filtering
+* Season type filtering (`REG`, `POST`)
+* Team filtering
+* Pagination using `limit` and `offset`
+* Typed response validation with Pydantic schemas
+
+---
+
+# Example API Response
+
+```json
+{
+  "count": 10,
+  "results": [
+    {
+      "player_display_name": "Patrick Mahomes",
+      "season": 2023,
+      "season_type": "REG",
+      "team": "KC",
+      "adjusted_cortisol_score": 0.6175
+    }
+  ]
+}
 ```
 
 ---
 
-# Running the NFL QB Cortisol Index Project Locally
+# Local Development Setup
 
-This guide explains how to run the full NFL QB Cortisol Index platform locally, including generating the dataset, launching the API backend, and running the Streamlit dashboard.
-
----
-
-# 1. Clone the Repository
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/nfl-qb-cortisol-analytics.git
+git clone https://github.com/advaitp04/nfl-qb-cortisol-analytics.git
 cd nfl-qb-cortisol-analytics
 ```
 
 ---
 
-# 2. Create a Python Virtual Environment (Recommended)
+## 2. Configure Environment Variables
 
-```bash
-python -m venv venv
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+DATABASE_URL=postgresql://postgres:password@localhost:5433/nfl_cortisol
 ```
 
-Activate the environment.
+A sample `.env.example` file is included for local development setup.
 
-Mac/Linux:
+---
+
+## 3. Launch Full Stack
 
 ```bash
-source venv/bin/activate
+docker compose up
 ```
 
-Windows:
+This launches:
+
+* FastAPI backend service
+* PostgreSQL database service
+* Streamlit dashboard service
+
+---
+
+## 4. Run Data Pipeline
 
 ```bash
-venv/scripts/activate
+python -m scripts.run_pipeline
 ```
 
 ---
 
-# 3. Install Required Dependencies
+## 5. Load Data into PostgreSQL
 
 ```bash
-pip install -r requirements.txt
+python -m scripts.load_to_postgres
 ```
 
 ---
 
-# 4. Run the Data Pipeline
+## 6. Access Services
 
-```bash
-python scripts/run_pipeline.py
-```
-
-This script performs the following steps:
-
-1. Extract NFL player statistics using nflreadpy
-2. Extract play-by-play data
-3. Engineer QB performance metrics
-4. Compute advanced metrics
-5. Calculate QB Cortisol scores
-6. Export the final master dataset CSV
-
-The final dataset is saved in:
-
-```bash
-data/processed/qb_master.csv
-```
-
----
-
-# 5. Launch the FastAPI Backend
-
-```bash
-uvicorn backend.main:app --reload
-```
-
-Open:
+### FastAPI Swagger Docs
 
 ```text
-http://localhost:8000/docs
+http://localhost:8001/docs
 ```
 
----
-
-# 6. Launch the Streamlit Dashboard
-
-```bash
-streamlit run app/Home.py
-```
-
-If it does not automatically open in your browser, navigate to:
+### Streamlit Dashboard
 
 ```text
-http://localhost:8501
+http://localhost:7860
 ```
 
 ---
 
-# 7. Using the Dashboard
+# Testing & Continuous Integration
 
-The dashboard allows users to explore the QB Cortisol Index across multiple seasons.
+The platform includes automated backend API tests using Pytest.
 
-Features include:
+Tests validate:
 
-- QB Cortisol Index rankings
-- Advanced QB performance metrics
-- Interactive filters for season selection
-- Data visualizations built with Plotly and Altair
-- Situational quarterback analytics
-- Season-by-season comparisons
-
----
-
-# 8. Testing and Continuous Integration
-
-The project includes automated API tests using Pytest.
+* Endpoint availability
+* Query filtering
+* Pagination behavior
+* Invalid query handling
+* Response schema validation
+* Route integrity
+* Backend API contracts
 
 Run tests locally:
 
@@ -328,31 +350,21 @@ Run tests locally:
 python -m pytest
 ```
 
-GitHub Actions CI workflows automatically execute tests on pushes and pull requests to help ensure backend reliability and API stability.
+GitHub Actions workflows automatically execute tests on pushes and pull requests to help ensure backend stability and reliability.
 
 ---
 
-# 9. Containerization
+# Containerization
 
-The project supports containerized deployment for both the backend API and Streamlit dashboard using Docker.
+The project uses Docker Compose to orchestrate a multi-service local development environment consisting of:
 
-## Backend API Container
+* FastAPI backend service
+* PostgreSQL database service
+* Streamlit dashboard service
 
-```bash
-docker build -f Dockerfile.api -t nfl-cortisol-api .
-docker run -p 8000:8000 nfl-cortisol-api
-```
+Mounted Docker volumes enable hot-reload development workflows while preserving PostgreSQL data persistence.
 
-## Streamlit Dashboard Container
-
-```bash
-docker build -f dockerfile -t nfl-cortisol-dashboard .
-docker run -p 7860:7860 nfl-cortisol-dashboard
-```
-
-## Docker Compose
-
-Run both services together:
+Run the full stack locally:
 
 ```bash
 docker compose up
@@ -360,13 +372,17 @@ docker compose up
 
 ---
 
-# 10. Troubleshooting
+# Data Source
 
-If you encounter dependency issues, try reinstalling the following packages:
+The project uses nflreadpy and nflverse datasets for NFL player statistics and play-by-play data analysis.
 
-```bash
-pip install --upgrade pandas plotly altair streamlit nflreadpy fastapi uvicorn pytest
-```
+## nflreadpy
+
+Installation:
+https://www.piwheels.org/project/nflreadpy/
+
+Documentation:
+https://nflreadr.nflverse.com/index.html
 
 ---
 
@@ -374,25 +390,31 @@ pip install --upgrade pandas plotly altair streamlit nflreadpy fastapi uvicorn p
 
 Planned future enhancements include:
 
-- React frontend migration for a modern full-stack architecture
-- PostgreSQL integration for persistent analytics storage
-- Cloud deployment using AWS services
-- API caching and performance optimization
-- AI/LLM-powered quarterback insight generation
-- Expanded advanced analytics and situational metrics
+* React + TypeScript frontend migration
+* AWS cloud deployment
+* Redis/API caching layer
+* Authentication and user accounts
+* Advanced analytics filtering and sorting
+* AI-generated QB scouting summaries
+* CI/CD deployment automation
+* Observability and logging infrastructure
 
 ---
 
 # Summary
 
-This project combines:
+The NFL QB Cortisol Index evolved from a sports analytics dashboard into a modular full-stack analytics platform combining:
 
-- Sports analytics
-- Data engineering
-- Backend API development
-- Automated testing
-- CI/CD workflows
-- Containerized services
-- Interactive dashboarding
+* Backend API engineering
+* Database architecture
+* Containerized infrastructure
+* Automated testing
+* Queryable analytics services
+* Interactive frontend visualization
+* Data engineering pipelines
 
-to create a modular NFL quarterback analytics platform capable of supporting future cloud-native and full-stack software engineering enhancements.
+The project demonstrates modern software engineering concepts including service-oriented backend architecture, typed API contracts, infrastructure orchestration, environment-based configuration management, and scalable analytics system design.
+
+```
+```
+
