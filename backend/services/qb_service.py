@@ -46,20 +46,23 @@ def clean_data(df):
 
     return df.where(pd.notnull(df), None)
 
-def get_qbs(season=None, limit=100):
+def get_qbs(season=None, team=None, limit=100, offset=0):
     try:
         query= """
             SELECT *
             FROM qb_metrics
-            WHERE (:season IS NULL OR season = :season)
+            WHERE (:season IS NULL OR season = :season) AND (:team IS NULL OR team = :team)
             LIMIT :limit
+            OFFSET :offset 
         """
 
         df = query_postgres(
             query,
             {
                 "season":season,
+                "team": team,
                 "limit": limit,
+                "offset": offset,
             }
         )
 
@@ -71,7 +74,10 @@ def get_qbs(season=None, limit=100):
         if season is not None and "season" in df.columns:
             df = df[df["season"] == season]
 
-        df = df.head(limit)
+        if team is not None and "team" in df.columns:
+            df = df[df["team"] == team]
+
+        df = df.iloc[offset: offset + limit]
 
     return clean_data(df).to_dict(orient="records")
 
@@ -154,6 +160,7 @@ def get_advanced_metrics(season: None, limit=100):
                 SELECT 
                 player_display_name,
                 season,
+                season_type,
                 team,
                 epa_per_dropback,
                 redzone_td_rate,
