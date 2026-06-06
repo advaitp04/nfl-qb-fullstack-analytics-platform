@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchQbs, type QBRecord} from "./api/client";
 import "./App.css";
+import Filters from "./components/Filters";
 import LeaderboardTable from "./components/LeaderboardTable";
+import InfoAccordion from "./components/InfoAccordion";
 
 function App() {
   const [qbs, setQbs] = useState<QBRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [season, setSeason] = useState(2023);
+  const [season, setSeason] = useState(2025);
   const [seasonType, setSeasonType] = useState<"REG" | "POST">("REG");
 
   useEffect(() => {
@@ -37,32 +39,13 @@ function App() {
   return (
     <main style={{ padding: "2rem" }}>
       <h1>NFL QB Cortisol Index</h1>
-        <div>
-        <label>
-          Season{" "}
-          <select
-            value={season}
-            onChange={(e) => setSeason(Number(e.target.value))}
-          >
-            {[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018].map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Season Type{" "}
-          <select
-            value={seasonType}
-            onChange={(e) => setSeasonType(e.target.value as "REG" | "POST")}
-          >
-            <option value="REG">Regular Season</option>
-            <option value="POST">Playoffs</option>
-          </select>
-        </label>
-      </div>
+      <InfoAccordion/>
+      <Filters
+        season={season}
+        setSeason={setSeason}
+        seasonType={seasonType}
+        setSeasonType={setSeasonType}
+      />
       {loading && <p>Loading...</p>}
 
       {error && <p>{error}</p>}
