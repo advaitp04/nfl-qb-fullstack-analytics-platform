@@ -1,4 +1,3 @@
-````md
 # NFL QB Cortisol Index: Full-Stack NFL Analytics Platform
 
 ## Introduction
@@ -443,7 +442,3 @@ The NFL QB Cortisol Index evolved from a sports analytics dashboard into a modul
 * Data engineering pipelines
 
 The project demonstrates modern software engineering concepts including service-oriented backend architecture, typed API contracts, infrastructure orchestration, environment-based configuration management, and scalable analytics system design.
-
-```
-```
-
