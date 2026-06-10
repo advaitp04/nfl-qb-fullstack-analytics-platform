@@ -2,7 +2,7 @@ name: Python API Tests
 
 on:
   push:
-    branches: [main, fullstack-upgrade]
+    branches: [main, ibm-software-upgrade]
   pull_request:
     branches: [main]
 
