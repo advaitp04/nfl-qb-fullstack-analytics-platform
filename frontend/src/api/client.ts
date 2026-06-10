@@ -1,46 +1,81 @@
+import type {
+  AdvancedMetricsListResponse,
+  FetchQbsParams,
+  HealthResponse,
+  QBListResponse,
+} from "../types/api";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export type QBRecord = {
-    player_display_name: string,
-    season: number, 
-    season_type: string, 
-    team: string, 
-    total_dropbacks: number, 
-    adjusted_cortisol_score: number,
-    adjusted_cortisol_rank: number 
-};
+function buildSearchParams(
+  params: Record<string, string | number | undefined>
+): URLSearchParams {
+  const searchParams = new URLSearchParams();
 
-export type QBListResponse = {
-    count: number,
-    records: QBRecord[]
-};
-
-export async function fetchQbs(params: {
-    season?: number;
-    season_type?: "REG" | "POST";
-    limit?: number;
-    offset?: number;
-    sort_by?: string;
-    sort_order?: "asc" | "desc";
-} = {}): Promise<QBListResponse> {
-    const searchParams = new URLSearchParams();
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value != undefined && value != null) {
-            searchParams.append(key, String(value))
-        }
-    });
-
-    const response = await fetch (
-        `${API_BASE_URL}/api/qbs?${searchParams}`
-    );
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch QB data");
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      searchParams.append(key, String(value));
     }
+  });
 
-    return response.json();
+  return searchParams;
 }
 
+async function getJson<T>(url: string): Promise<T> {
+  const response = await fetch(url);
 
+  if (!response.ok) {
+    throw new Error(`Request failed: ${response.status}`);
+  }
 
+  return response.json() as Promise<T>;
+}
+
+export async function fetchQbs(
+  params: FetchQbsParams = {}
+): Promise<QBListResponse> {
+  const searchParams = buildSearchParams(
+    params as Record<string, string | number | undefined>
+  );
+  return getJson<QBListResponse>(`${API_BASE_URL}/api/qbs?${searchParams}`);
+}
+
+export async function fetchQbByName(
+  name: string,
+  season?: number
+): Promise<QBListResponse> {
+  const searchParams = buildSearchParams({ season });
+  const query = searchParams.toString();
+  const suffix = query ? `?${query}` : "";
+  return getJson<QBListResponse>(
+    `${API_BASE_URL}/api/qbs/${encodeURIComponent(name)}${suffix}`
+  );
+}
+
+export async function fetchCortisolRankings(params: {
+  season?: number;
+  season_type?: FetchQbsParams["season_type"];
+  limit?: number;
+  offset?: number;
+} = {}): Promise<QBListResponse> {
+  const searchParams = buildSearchParams(params);
+  return getJson<QBListResponse>(
+    `${API_BASE_URL}/api/rankings/cortisol?${searchParams}`
+  );
+}
+
+export async function fetchAdvancedMetrics(params: {
+  season?: number;
+  season_type?: FetchQbsParams["season_type"];
+  limit?: number;
+  offset?: number;
+} = {}): Promise<AdvancedMetricsListResponse> {
+  const searchParams = buildSearchParams(params);
+  return getJson<AdvancedMetricsListResponse>(
+    `${API_BASE_URL}/api/advanced-metrics?${searchParams}`
+  );
+}
+
+export async function fetchHealth(): Promise<HealthResponse> {
+  return getJson<HealthResponse>(`${API_BASE_URL}/api/health`);
+}
