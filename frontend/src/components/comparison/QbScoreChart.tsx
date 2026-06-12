@@ -6,22 +6,32 @@ type Props = {
 };
 
 const METRICS = ["Turnover", "Drive", "Success"] as const;
-const CHART_HEIGHT = 420;
-const BAR_WIDTH = 34;
-const GROUP_GAP = 72;
-const BAR_GAP = 8;
+const CHART_HEIGHT = 380;
+const BAR_WIDTH = 42;
+const GROUP_GAP = 150;
+const BAR_GAP = 16;
+const PLOT_TOP = 28;
+const PLOT_RIGHT = 24;
+const PLOT_BOTTOM = 58;
+const PLOT_LEFT = 42;
+const PLOT_HEIGHT = CHART_HEIGHT - PLOT_TOP - PLOT_BOTTOM;
+
+function getY(score: number): number {
+  const boundedScore = Math.max(0, Math.min(100, score));
+  return PLOT_TOP + (100 - boundedScore) * (PLOT_HEIGHT / 100);
+}
 
 function QbScoreChart({ qb1, qb2 }: Props) {
   const groups = METRICS.map((metric, index) => ({
     metric,
-    x: index * GROUP_GAP + 24,
+    x: PLOT_LEFT + index * GROUP_GAP + 28,
     bars: [
       { qb: qb1.name, score: getMetricScore(qb1, metric), color: "#d6f0ff" },
       { qb: qb2.name, score: getMetricScore(qb2, metric), color: "#0b3d91" },
     ],
   }));
 
-  const chartWidth = METRICS.length * GROUP_GAP + 48;
+  const chartWidth = PLOT_LEFT + METRICS.length * GROUP_GAP + PLOT_RIGHT;
 
   return (
     <figure className="qb-score-chart">
@@ -48,21 +58,22 @@ function QbScoreChart({ qb1, qb2 }: Props) {
         aria-label={`Comparison chart for ${qb1.name} and ${qb2.name}`}
       >
         {[0, 25, 50, 75, 100].map((tick) => {
-          const y = CHART_HEIGHT - 48 - tick * 3;
+          const y = getY(tick);
           return (
             <g key={tick}>
               <line
-                x1="16"
-                x2={chartWidth - 16}
+                x1={PLOT_LEFT}
+                x2={chartWidth - PLOT_RIGHT}
                 y1={y}
                 y2={y}
-                stroke="rgba(255,255,255,0.25)"
+                stroke="rgba(255,255,255,0.22)"
               />
               <text
-                x="0"
+                x={PLOT_LEFT - 12}
                 y={y + 4}
                 fill="white"
                 fontSize="12"
+                textAnchor="end"
               >
                 {tick.toFixed(0)}
               </text>
@@ -70,40 +81,50 @@ function QbScoreChart({ qb1, qb2 }: Props) {
           );
         })}
 
+        <line
+          x1={PLOT_LEFT}
+          x2={PLOT_LEFT}
+          y1={PLOT_TOP}
+          y2={CHART_HEIGHT - PLOT_BOTTOM}
+          stroke="rgba(255,255,255,0.35)"
+        />
+
         {groups.map(({ metric, x, bars }) => (
           <g key={metric}>
             {bars.map((bar, barIndex) => {
-              const barHeight = Math.max(0, bar.score) * 3;
+              const barY = getY(bar.score);
+              const barHeight = CHART_HEIGHT - PLOT_BOTTOM - barY;
               const barX = x + barIndex * (BAR_WIDTH + BAR_GAP);
-              const barY = CHART_HEIGHT - 48 - barHeight;
 
               return (
-                <g key={`${metric}-${bar.qb}`}>
+                <g key={`${metric}-${barIndex}`}>
                   <rect
                     x={barX}
                     y={barY}
                     width={BAR_WIDTH}
                     height={barHeight}
                     fill={bar.color}
-                    rx="4"
+                    rx="6"
                   />
                   <text
                     x={barX + BAR_WIDTH / 2}
-                    y={barY - 8}
+                    y={Math.max(PLOT_TOP - 8, barY - 10)}
                     fill="white"
-                    fontSize="12"
+                    fontSize="13"
+                    fontWeight="700"
                     textAnchor="middle"
                   >
-                    {bar.score.toFixed(3)}
+                    {bar.score.toFixed(1)}
                   </text>
                 </g>
               );
             })}
             <text
               x={x + BAR_WIDTH + BAR_GAP / 2}
-              y={CHART_HEIGHT - 16}
+              y={CHART_HEIGHT - 20}
               fill="white"
-              fontSize="13"
+              fontSize="14"
+              fontWeight="700"
               textAnchor="middle"
             >
               {metric}

@@ -287,21 +287,25 @@ body {
 
 .qb-score-chart {
   margin: 0;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 12px;
   background: rgba(11, 61, 145, 0.18);
+  overflow-x: auto;
 }
 
 .qb-score-chart__legend {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .qb-score-chart__legend-item {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 600;
 }
 
 .qb-score-chart__swatch {
@@ -311,7 +315,9 @@ body {
 }
 
 .qb-score-chart svg {
+  display: block;
   width: 100%;
+  min-width: 540px;
   height: auto;
 }
 
@@ -344,5 +350,9 @@ body {
   .comparison-section__selectors,
   .qb-comparison-cards {
     grid-template-columns: 1fr;
+  }
+
+  .qb-score-chart svg {
+    min-width: 480px;
   }
 }
