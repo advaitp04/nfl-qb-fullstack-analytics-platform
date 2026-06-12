@@ -220,7 +220,7 @@ def get_advanced_metrics(season: None, season_type: None, limit=100, offset=0):
                 adjusted_cortisol_score,
                 adjusted_cortisol_rank
                 FROM qb_metrics
-                WHERE (:season IS NULL OR season = :season)
+                WHERE (:season IS NULL OR season = :season) AND (:season_type IS NULL OR season_type = :season_type)
                 LIMIT :limit 
                 OFFSET :offset
                 """
