@@ -161,6 +161,34 @@ body {
   font-size: 0.85rem;
 }
 
+.leaderboard-table__sortable-header {
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+.leaderboard-table__sortable-header:hover {
+  background: #e0f2fe;
+  color: #0b3d91;
+}
+
+.leaderboard-table__sortable-header--active {
+  background: #dbeafe;
+  color: #0b3d91;
+}
+
+.leaderboard-table__sort-indicator {
+  display: inline-block;
+  margin-left: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.leaderboard-table tbody tr:hover td {
+  box-shadow: inset 0 0 0 9999px rgba(15, 23, 42, 0.045);
+}
+
 .comparison-section {
   margin-top: 2rem;
 }

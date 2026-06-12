@@ -40,6 +40,18 @@ function LeaderboardTable({ rows }: Props) {
     setSortDirection("asc");
   };
 
+  const getHeaderClassName = (headerSortKey: SortKey) =>
+    `leaderboard-table__sortable-header${
+      sortKey === headerSortKey ? " leaderboard-table__sortable-header--active" : ""
+    }`;
+
+  const renderSortIndicator = (headerSortKey: SortKey) =>
+    sortKey === headerSortKey ? (
+      <span className="leaderboard-table__sort-indicator">
+        {sortDirection}
+      </span>
+    ) : null;
+
   const displayRows = useMemo(() => {
     if (!sortKey) {
       return rows;
@@ -73,58 +85,84 @@ function LeaderboardTable({ rows }: Props) {
         <thead>
           <tr>
             <th
+              className={getHeaderClassName("stabilizedRank")}
               title="Rank based on the adjusted Cortisol Score, which accounts for total dropbacks during the regular season"
               onClick={() => handleSort("stabilizedRank")}
             >
               Stabilized Rank
-            </th>
-            <th title="Quarterback Name" onClick={() => handleSort("qbName")}>
-              QB Name
-            </th>
-            <th title="Team of Quarterback" onClick={() => handleSort("team")}>
-              Team
+              {renderSortIndicator("stabilizedRank")}
             </th>
             <th
+              className={getHeaderClassName("qbName")}
+              title="Quarterback Name"
+              onClick={() => handleSort("qbName")}
+            >
+              QB Name
+              {renderSortIndicator("qbName")}
+            </th>
+            <th
+              className={getHeaderClassName("team")}
+              title="Team of Quarterback"
+              onClick={() => handleSort("team")}
+            >
+              Team
+              {renderSortIndicator("team")}
+            </th>
+            <th
+              className={getHeaderClassName("stabilizedCortisolScore")}
               title="Adjusted Cortisol Score, which accounts for total dropbacks during the regular season"
               onClick={() => handleSort("stabilizedCortisolScore")}
             >
               Stabilized Cortisol Score
+              {renderSortIndicator("stabilizedCortisolScore")}
             </th>
             <th
+              className={getHeaderClassName("cortisolScore")}
               title="Cortisol Score calculated based on the average of the turnover, drive, & success scores"
               onClick={() => handleSort("cortisolScore")}
             >
               Cortisol Score
+              {renderSortIndicator("cortisolScore")}
             </th>
             <th
+              className={getHeaderClassName("dropbacks")}
               title="Total number of plays designed as a pass for a QB during the regular season"
               onClick={() => handleSort("dropbacks")}
             >
               Dropbacks
+              {renderSortIndicator("dropbacks")}
             </th>
             <th
+              className={getHeaderClassName("turnoverScore")}
               title="Average of normalized turnover/drive-killer factors: INT rate, fumble-lost rate, sack rate, and sack-yards-per-sack"
               onClick={() => handleSort("turnoverScore")}
             >
               Turnover Score
+              {renderSortIndicator("turnoverScore")}
             </th>
             <th
+              className={getHeaderClassName("driveScore")}
               title="Average of normalized drive-sustainability factors: first-down rate and completion rate"
               onClick={() => handleSort("driveScore")}
             >
               Drive Score
+              {renderSortIndicator("driveScore")}
             </th>
             <th
+              className={getHeaderClassName("successScore")}
               title="Average of normalized offensive-success factors: TD per attempt, EPA per dropback, and yards per attempt"
               onClick={() => handleSort("successScore")}
             >
               Success Score
+              {renderSortIndicator("successScore")}
             </th>
             <th
+              className={getHeaderClassName("rank")}
               title="Rank based on the Cortisol Score, which is calculated based on the average of the turnover, drive, & success scores"
               onClick={() => handleSort("rank")}
             >
               Rank
+              {renderSortIndicator("rank")}
             </th>
           </tr>
         </thead>
