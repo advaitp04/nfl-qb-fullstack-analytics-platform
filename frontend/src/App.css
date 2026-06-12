@@ -117,22 +117,64 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.info-accordion__header:hover {
+  background: rgba(11, 61, 145, 0.06);
+}
+
+.info-accordion__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(11, 61, 145, 0.1);
+}
+
+.info-accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.22s ease, opacity 0.18s ease;
+}
+
+.info-accordion--open .info-accordion__panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .info-accordion__body {
+  overflow: hidden;
   padding: 0 1.25rem 1.25rem;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .info-accordion__body h3,
 .info-accordion__body h4 {
   color: #0b3d91;
+  margin: 0 0 0.75rem;
+  line-height: 1.25;
+}
+
+.info-accordion__body p,
+.info-accordion__body li {
+  margin: 0 0 0.75rem;
+}
+
+.info-accordion__body ul {
+  margin: 0;
+  padding-left: 1.2rem;
 }
 
 .info-accordion__body hr {
   border: none;
   border-top: 1px solid rgba(15, 23, 42, 0.12);
-  margin: 1rem 0;
+  margin: 1.1rem 0;
 }
 
 .leaderboard-table-wrapper {

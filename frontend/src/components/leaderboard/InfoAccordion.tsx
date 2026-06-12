@@ -4,18 +4,25 @@ function InfoAccordion() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="info-accordion">
+    <section className={`info-accordion${isOpen ? " info-accordion--open" : ""}`}>
       <button
         type="button"
         className="info-accordion__header"
         onClick={() => setIsOpen((open) => !open)}
         aria-expanded={isOpen}
+        aria-controls="cortisol-index-info"
       >
         <span>What is the NFL QB Cortisol Index?</span>
-        <span aria-hidden="true">{isOpen ? "−" : "+"}</span>
+        <span className="info-accordion__icon" aria-hidden="true">
+          {isOpen ? "−" : "+"}
+        </span>
       </button>
 
-      {isOpen && (
+      <div
+        id="cortisol-index-info"
+        className="info-accordion__panel"
+        aria-hidden={!isOpen}
+      >
         <div className="info-accordion__body">
           <h3>How the Cortisol Model Works</h3>
 
@@ -73,7 +80,7 @@ function InfoAccordion() {
             based on total dropbacks during the season.
           </p>
         </div>
-      )}
+      </div>
     </section>
   );
 }
