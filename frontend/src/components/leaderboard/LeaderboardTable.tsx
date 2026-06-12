@@ -9,6 +9,23 @@ type Props = {
 type SortDirection = "asc" | "desc";
 type SortKey = keyof LeaderboardRow;
 
+function getCortisolCellStyle(score: number, min: number, max: number) {
+  const normalized =
+    max === min ? 0.5 : Math.max(0, Math.min(1, (score - min) / (max - min)));
+  const distanceFromMiddle = Math.abs(normalized - 0.5) * 2;
+  const hue = normalized * 120;
+  const saturation = 32 + distanceFromMiddle * 38;
+  const lightness = 86 - distanceFromMiddle * 46;
+  const isDark = lightness < 58;
+
+  return {
+    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+    color: isDark ? "#ffffff" : "#1f2937",
+    fontWeight: 700,
+    textShadow: isDark ? "0 1px 1px rgba(0, 0, 0, 0.35)" : "none",
+  };
+}
+
 function LeaderboardTable({ rows }: Props) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -40,6 +57,15 @@ function LeaderboardTable({ rows }: Props) {
       return sortDirection === "asc" ? comparison : -comparison;
     });
   }, [rows, sortDirection, sortKey]);
+
+  const stabilizedCortisolScores = displayRows.map(
+    (row) => row.stabilizedCortisolScore
+  );
+  const cortisolScores = displayRows.map((row) => row.cortisolScore);
+  const minStabilizedCortisolScore = Math.min(...stabilizedCortisolScores);
+  const maxStabilizedCortisolScore = Math.max(...stabilizedCortisolScores);
+  const minCortisolScore = Math.min(...cortisolScores);
+  const maxCortisolScore = Math.max(...cortisolScores);
 
   return (
     <div className="leaderboard-table-wrapper">
@@ -110,16 +136,23 @@ function LeaderboardTable({ rows }: Props) {
               <td>{row.qbName}</td>
               <td>{row.team}</td>
               <td
-                style={{
-                  backgroundColor: scoreToGradientColor(
-                    row.stabilizedCortisolScore,
-                    "green-red"
-                  ),
-                }}
+                style={getCortisolCellStyle(
+                  row.stabilizedCortisolScore,
+                  minStabilizedCortisolScore,
+                  maxStabilizedCortisolScore
+                )}
               >
                 {row.stabilizedCortisolScore.toFixed(1)}
               </td>
-              <td>{row.cortisolScore.toFixed(1)}</td>
+              <td
+                style={getCortisolCellStyle(
+                  row.cortisolScore,
+                  minCortisolScore,
+                  maxCortisolScore
+                )}
+              >
+                {row.cortisolScore.toFixed(1)}
+              </td>
               <td>{row.dropbacks}</td>
               <td
                 style={{

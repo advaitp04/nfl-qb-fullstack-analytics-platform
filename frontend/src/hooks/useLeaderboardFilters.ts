@@ -16,12 +16,12 @@ interface UseLeaderboardFiltersResult {
   maxDropbacks: number;
   dropbackStep: number;
   dropbackMin: number;
+  setQbs: (qbs: QBRecord[]) => void;
   filteredQbs: QBRecord[];
 }
 
-export function useLeaderboardFilters(
-  qbs: QBRecord[]
-): UseLeaderboardFiltersResult {
+export function useLeaderboardFilters(): UseLeaderboardFiltersResult {
+  const [qbs, setQbs] = useState<QBRecord[]>([]);
   const [season, setSeason] = useState(DEFAULT_SEASON);
   const [seasonType, setSeasonType] = useState<SeasonType>(DEFAULT_SEASON_TYPE);
   const [minDropbacks, setMinDropbacks] = useState(
@@ -73,6 +73,7 @@ export function useLeaderboardFilters(
     maxDropbacks,
     dropbackStep: dropbackConfig.step,
     dropbackMin: dropbackConfig.min,
+    setQbs,
     filteredQbs,
   };
 }

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import FilterPanel from "../components/filters/FilterPanel";
 import AppHeader from "../components/layout/AppHeader";
 import PageLayout from "../components/layout/PageLayout";
@@ -13,7 +13,6 @@ import { useQbs } from "../hooks/useQbs";
 import { toLeaderboardRows } from "../utils/qbTransformations";
 
 function HomePage() {
-  const { qbs, loading, error } = useQbs({});
   const {
     season,
     setSeason,
@@ -24,8 +23,18 @@ function HomePage() {
     maxDropbacks,
     dropbackStep,
     dropbackMin,
+    setQbs,
     filteredQbs,
-  } = useLeaderboardFilters(qbs);
+  } = useLeaderboardFilters();
+
+  const { qbs, loading, error } = useQbs({
+    season,
+    season_type: seasonType,
+  });
+
+  useEffect(() => {
+    setQbs(qbs);
+  }, [qbs, setQbs]);
 
   const { qb1, qb2, setQb1, setQb2, canCompare } =
     useQbComparisonSelection(filteredQbs);
