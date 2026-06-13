@@ -343,8 +343,29 @@ body {
   height: auto;
 }
 
-.advanced-metrics-preview p {
+.advanced-chart {
+  margin: 0;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: rgba(11, 61, 145, 0.18);
+  overflow-x: auto;
+}
+
+.advanced-chart p {
   margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.advanced-chart svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.advanced-chart text {
+  fill: white;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -381,5 +402,9 @@ body {
 
   .qb-score-chart svg {
     min-width: 480px;
+  }
+
+  .advanced-chart svg {
+    min-width: 520px;
   }
 }
