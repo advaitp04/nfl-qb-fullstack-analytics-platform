@@ -1,4 +1,5 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
+import { toPercentage } from "../../utils/metricFormatters";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -12,19 +13,15 @@ const PLOT_RIGHT = 32;
 const PLOT_BOTTOM = 44;
 const PLOT_LEFT = 190;
 
-function getRate(value: number | null | undefined): number {
-  return (value ?? 0) * 100;
-}
-
 function RedzoneTdLeadersChart({ records, topN }: Props) {
   const leaders = [...records]
-    .sort((a, b) => getRate(b.redzone_td_rate) - getRate(a.redzone_td_rate))
+    .sort((a, b) => toPercentage(b.redzone_td_rate) - toPercentage(a.redzone_td_rate))
     .slice(0, topN)
     .map((record) => ({
       name: record.player_display_name ?? "Unknown",
       team: record.team ?? "—",
       dropbacks: record.total_dropbacks ?? 0,
-      rate: getRate(record.redzone_td_rate),
+      rate: toPercentage(record.redzone_td_rate),
     }));
 
   const chartHeight = PLOT_TOP + leaders.length * ROW_HEIGHT + PLOT_BOTTOM;

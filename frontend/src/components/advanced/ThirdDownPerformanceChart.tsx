@@ -1,4 +1,5 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
+import { toPercentage } from "../../utils/metricFormatters";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -12,24 +13,20 @@ const PLOT_RIGHT = 32;
 const PLOT_BOTTOM = 44;
 const PLOT_LEFT = 190;
 
-function getRate(value: number | null | undefined): number {
-  return (value ?? 0) * 100;
-}
-
 function ThirdDownPerformanceChart({ records, topN }: Props) {
   const leaders = [...records]
     .sort(
       (a, b) =>
-        getRate(b.third_down_regular_conversion_rate) -
-        getRate(a.third_down_regular_conversion_rate)
+        toPercentage(b.third_down_regular_conversion_rate) -
+        toPercentage(a.third_down_regular_conversion_rate)
     )
     .slice(0, topN)
     .map((record) => ({
       name: record.player_display_name ?? "Unknown",
       team: record.team ?? "—",
       dropbacks: record.total_dropbacks ?? 0,
-      regularRate: getRate(record.third_down_regular_conversion_rate),
-      longRate: getRate(record.third_and_long_conversion_rate),
+      regularRate: toPercentage(record.third_down_regular_conversion_rate),
+      longRate: toPercentage(record.third_and_long_conversion_rate),
     }));
 
   const chartHeight = PLOT_TOP + leaders.length * ROW_HEIGHT + PLOT_BOTTOM;

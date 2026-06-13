@@ -1,4 +1,5 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
+import { toPercentage } from "../../utils/metricFormatters";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -12,10 +13,6 @@ const PLOT_BOTTOM = 72;
 const PLOT_LEFT = 72;
 const PLOT_WIDTH = CHART_WIDTH - PLOT_LEFT - PLOT_RIGHT;
 const PLOT_HEIGHT = CHART_HEIGHT - PLOT_TOP - PLOT_BOTTOM;
-
-function getRate(value: number | null | undefined): number {
-  return (value ?? 0) * 100;
-}
 
 function scale(value: number, min: number, max: number): number {
   if (max === min) {
@@ -45,9 +42,9 @@ function VolatilityEfficiencyChart({ records }: Props) {
   const points = records.map((record) => ({
     name: record.player_display_name ?? "Unknown",
     team: record.team ?? "—",
-    negativeEpaRate: getRate(record.negative_epa_rate),
-    panicPlayRate: getRate(record.panic_play_rate),
-    stabilizedCortisolRating: getRate(record.adjusted_cortisol_score),
+    negativeEpaRate: toPercentage(record.negative_epa_rate),
+    panicPlayRate: toPercentage(record.panic_play_rate),
+    stabilizedCortisolRating: toPercentage(record.adjusted_cortisol_score),
   }));
 
   const [minX, maxX] = getDomain(
