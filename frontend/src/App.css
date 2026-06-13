@@ -13,6 +13,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background: linear-gradient(to top, #d6f0ff, #7ec8ff, #1e88e5);
+  overflow-x: hidden;
 }
 
 .app-shell {
@@ -201,11 +202,13 @@ body {
 
 .leaderboard-table-wrapper {
   overflow-x: auto;
+  max-width: 100%;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
 }
 
 .leaderboard-table {
+  min-width: 880px;
   width: 100%;
   border-collapse: collapse;
   background: rgba(255, 255, 255, 0.95);
@@ -313,6 +316,7 @@ body {
   border-radius: 12px;
   background: rgba(11, 61, 145, 0.18);
   overflow-x: auto;
+  max-width: 100%;
 }
 
 .qb-score-chart__legend {
@@ -353,6 +357,7 @@ body {
   border-radius: 12px;
   background: rgba(11, 61, 145, 0.18);
   overflow-x: auto;
+  max-width: 100%;
 }
 
 .comparison-section + .advanced-chart {
@@ -403,8 +408,16 @@ body {
 }
 
 @media (max-width: 960px) {
+  .app-shell {
+    padding: 1rem;
+  }
+
   .app-grid {
     grid-template-columns: 1fr;
+  }
+
+  .app-grid__sidebar {
+    order: -1;
   }
 
   .comparison-section__selectors,
@@ -422,5 +435,27 @@ body {
 
   .advanced-chart svg {
     min-width: 520px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-nav {
+    flex-direction: column;
+    padding-inline: 1rem;
+  }
+
+  .app-header {
+    align-items: flex-start;
+  }
+
+  .app-header__icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .filter-panel,
+  .qb-score-chart,
+  .advanced-chart {
+    padding: 1rem;
   }
 }
