@@ -229,6 +229,17 @@ function AdvancedQbComparisonSection({ records }: Props) {
               </g>
             );
           })}
+          <text
+          x= "30"
+          y={(CHART_HEIGHT / 2) - 11} 
+          transform={`rotate(-90 20 ${CHART_HEIGHT / 2})`}
+          textAnchor="middle"
+          fill="white"
+          fontSize={12}
+          fontWeight="bold"
+          >
+          Percentile
+        </text>
 
           <line
             x1={PLOT_LEFT}

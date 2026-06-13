@@ -80,7 +80,17 @@ function QbScoreChart({ qb1, qb2 }: Props) {
             </g>
           );
         })}
-
+        <text
+          x= "30"
+          y={(CHART_HEIGHT / 2) - 11} 
+          transform={`rotate(-90 20 ${CHART_HEIGHT / 2})`}
+          textAnchor="middle"
+          fill="white"
+          fontSize={12}
+          fontWeight="bold"
+          >
+          Percentile
+        </text>
         <line
           x1={PLOT_LEFT}
           x2={PLOT_LEFT}
@@ -88,7 +98,6 @@ function QbScoreChart({ qb1, qb2 }: Props) {
           y2={CHART_HEIGHT - PLOT_BOTTOM}
           stroke="rgba(255,255,255,0.35)"
         />
-
         {groups.map(({ metric, x, bars }) => (
           <g key={metric}>
             {bars.map((bar, barIndex) => {
