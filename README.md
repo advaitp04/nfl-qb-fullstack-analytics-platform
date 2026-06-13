@@ -117,11 +117,11 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 
 ## QB Cortisol Leaderboard
 
-![QB Cortisol Leaderboard](images/nflcortisoldashboard1.png)
+![QB Cortisol Leaderboard](images/nflfullstackplatform1.png)
 
 ## Advanced Metrics Dashboard
 
-![Advanced Metrics Dashboard](images/nflcortisoldashboard2.png)
+![Advanced Metrics Dashboard](images/nflfullstackplatform2.png)
 
 ---
 
