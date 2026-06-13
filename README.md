@@ -2,41 +2,46 @@
 
 ## Introduction
 
-The NFL QB Cortisol Index is a full-stack sports analytics platform designed to evaluate quarterback stability and offensive consistency using NFL player statistics and play-by-play data.
+The NFL QB Cortisol Index is a full-stack sports analytics platform designed to evaluate quarterback stability, offensive consistency, and situational performance using NFL player statistics and play-by-play data.
 
 The platform computes a custom QB Cortisol Index, a composite metric engineered to measure how effectively quarterbacks sustain drives, avoid stress-inducing mistakes, and maintain offensive efficiency across multiple NFL seasons.
 
-Originally developed as a sports analytics dashboard, the project evolved into a modular backend-focused analytics platform featuring:
+Originally developed as a sports analytics dashboard, the project evolved into a modular full-stack analytics platform featuring:
 
 - FastAPI backend APIs
 - PostgreSQL integration
 - Dockerized multi-service infrastructure
-- Typed API contracts with Pydantic
+- Typed API contracts with Pydantic and TypeScript
+- React + TypeScript frontend architecture
 - Automated testing with Pytest
 - CI workflows with GitHub Actions
-- Query filtering and pagination
-- Streamlit analytics dashboard
+- Query filtering, sorting, and pagination
+- Interactive analytics visualizations
+- Custom React hooks and reusable UI components
 
-The project combines sports analytics, backend engineering, data engineering, API architecture, and infrastructure orchestration into a production-style analytics system.
+The project combines sports analytics, backend engineering, frontend architecture, API design, infrastructure orchestration, and data engineering into a production-style analytics system.
 
-## Live Dashboard
+---
 
-[![Streamlit App](https://img.shields.io/badge/Live%20Dashboard-Streamlit-green)](https://advait-patil-nfl-qb-cortisol-analytics.streamlit.app/)
+# Live Dashboard
+
+[![Live Dashboard](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-blue)](https://advait-patil-nfl-qb-cortisol-analytics.streamlit.app/)
 
 ---
 
 # Software Engineering Upgrade
 
-The project was expanded from a standalone analytics notebook/dashboard into a modular full-stack analytics platform with production-style backend architecture.
+The project was expanded from a standalone analytics notebook/dashboard into a modular full-stack analytics platform with production-style backend and frontend architecture.
 
 Major engineering-focused additions include:
 
 - FastAPI backend service for REST API endpoints
 - PostgreSQL integration using SQLAlchemy
 - Modular service-layer backend architecture
-- Pydantic response schemas for typed API contracts
-- Query filtering, validation, and pagination support
-- Dockerized backend, database, and dashboard services
+- Typed backend API contracts using Pydantic schemas
+- Typed frontend API contracts using TypeScript interfaces
+- Query filtering, validation, sorting, and pagination support
+- Dockerized backend, database, and frontend services
 - Docker Compose orchestration for local multi-service development
 - Automated API testing with Pytest
 - GitHub Actions CI pipeline
@@ -44,10 +49,13 @@ Major engineering-focused additions include:
 - Reusable response helper utilities
 - Structured backend route organization
 - Graceful CSV fallback handling for local development/testing
-- Streamlit frontend fully integrated with FastAPI backend APIs
-- API-driven frontend architecture replacing direct CSV-based frontend access
+- Modular React + TypeScript frontend architecture
+- Interactive sorting, filtering, and comparison visualizations
+- Custom React hooks for data fetching and state management
+- Reusable transformation utilities for analytics visualizations
+- Multi-page analytics dashboards
 
-These upgrades significantly improved the platform’s scalability, maintainability, portability, and production-readiness.
+These upgrades significantly improved the platform’s scalability, maintainability, portability, developer experience, and production-readiness.
 
 ---
 
@@ -88,9 +96,13 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 
 # Dashboard Preview
 
-![QB Cortisol Dashboard](images/nflcortisoldashboard1.png)
+## QB Cortisol Leaderboard
 
-![QB Advanced Metrics](images/nflcortisoldashboard2.png)
+![QB Cortisol Leaderboard](images/nflcortisoldashboard1.png)
+
+## Advanced Metrics Dashboard
+
+![Advanced Metrics Dashboard](images/nflcortisoldashboard2.png)
 
 ---
 
@@ -100,16 +112,20 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 
 - Python
 - SQL
+- TypeScript
+- JavaScript
+
+## Frontend Engineering
+
+- React
+- TypeScript
+- Vite
 
 ## Backend Engineering
 
 - FastAPI
 - SQLAlchemy
 - Pydantic
-
-## Frontend / Dashboard
-
-- Streamlit
 
 ## Database
 
@@ -120,10 +136,10 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 - Pandas
 - nflreadpy
 
-## Visualization
+## Frontend Visualization
 
-- Plotly
-- Altair
+- Custom SVG-based React visualizations
+- Responsive React chart components
 
 ## Testing & CI
 
@@ -142,21 +158,79 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 
 ---
 
+# Frontend Architecture
+
+The React frontend follows a layered architecture where data flows through typed APIs, reusable hooks, transformation utilities, and feature-based UI components before rendering.
+
+```text
+FastAPI Backend
+      ↓
+Typed API Client Layer
+      ↓
+Custom React Hooks
+      ↓
+Filtering + Transformation Utilities
+      ↓
+Feature Components
+      ↓
+Page-Level Composition
+```
+
+The frontend architecture separates:
+
+- API communication
+- state ownership
+- data transformation
+- visualization rendering
+- reusable UI composition
+- page orchestration
+
+to improve maintainability, scalability, and developer experience as the platform grows.
+
+---
+
+# Modern React Frontend Architecture
+
+The frontend was refactored from a monolithic dashboard structure into a modular React + TypeScript architecture featuring:
+
+- Feature-based React component organization
+- Typed frontend-backend API contracts
+- Reusable chart and visualization components
+- Custom React hooks for state and data fetching
+- Client/server-side filtering strategies
+- Interactive leaderboard sorting
+- Multi-page analytics dashboards
+- Shared transformation utilities
+- Stateful and presentational component separation
+- Modular page orchestration
+
+The architecture mirrors modern production frontend engineering practices by separating:
+
+- data fetching
+- business logic
+- state management
+- transformation logic
+- UI rendering
+
+into reusable and scalable layers.
+
+---
+
 # System Architecture
 
 The platform is structured as a modular multi-service analytics system.
 
 ```text
-Streamlit Frontend Dashboard
-            ↓
-Reusable API Client Layer
-            ↓
+React Frontend
+        ↓
+Typed API Client Layer
+        ↓
 FastAPI Backend API
-            ↓
+        ↓
 Service Layer / Query Logic
-            ↓
+        ↓
 PostgreSQL Database
-            ↓
+        ↓
 Dockerized Multi-Service Infrastructure
 ```
 
@@ -167,26 +241,69 @@ Dockerized Multi-Service Infrastructure
 ```text
 nfl-qb-cortisol-analytics/
 │
-├── app/                         # Streamlit dashboard frontend
-├── backend/
-│   ├── db/                      # Database connection layer
-│   ├── models/                  # Pydantic response schemas
-│   ├── routes/                  # FastAPI route modules
-│   ├── services/                # Analytics/business logic layer
-│   ├── utils/                   # Shared backend utilities
-│   └── main.py                  # FastAPI application entrypoint
+├── frontend/
+│   ├── src/
+│   │   ├── api/                # Typed frontend API client layer
+│   │   ├── components/         # Reusable UI + chart components
+│   │   ├── constants/          # Shared frontend constants
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── pages/              # Page-level orchestration
+│   │   ├── types/              # Frontend API contract types
+│   │   ├── utils/              # Shared transformation utilities
+│   │   ├── App.tsx
+│   │   └── main.tsx
 │
-├── scripts/                     # Data pipeline scripts
-├── tests/                       # Automated backend API tests
-├── data/processed/              # Generated datasets
-├── .github/workflows/           # CI workflows
-├── Dockerfile.api               # FastAPI backend container
-├── dockerfile                   # Streamlit dashboard container
-├── docker-compose.yml           # Multi-container orchestration
+├── backend/
+│   ├── db/                     # Database connection layer
+│   ├── models/                 # Pydantic response schemas
+│   ├── routes/                 # FastAPI route modules
+│   ├── services/               # Analytics/business logic layer
+│   ├── utils/                  # Shared backend utilities
+│   └── main.py                 # FastAPI application entrypoint
+│
+├── scripts/                    # Data pipeline scripts
+├── tests/                      # Automated backend API tests
+├── data/processed/             # Generated datasets
+├── images/                     # Dashboard screenshots
+├── .github/workflows/          # CI workflows
+├── Dockerfile.api              # FastAPI backend container
+├── docker-compose.yml          # Multi-container orchestration
 ├── requirements.txt
 ├── .env.example
 └── README.md
 ```
+
+---
+
+# Frontend Features
+
+## Home Dashboard
+
+The primary leaderboard dashboard includes:
+
+- Interactive QB Cortisol leaderboard
+- Dynamic filtering by:
+  - season
+  - season type
+  - minimum dropbacks
+- Client/server-side filtering integration
+- Interactive table sorting
+- Gradient-based score visualizations
+- QB comparison charts
+- Responsive UI components
+- Expandable methodology accordion
+
+## Advanced Metrics Dashboard
+
+The advanced analytics page includes:
+
+- QB Volatility vs. Efficiency visualization
+- Advanced QB comparison charts
+- Red Zone Passing TD Leaders
+- Third Down Performance Leaders
+- QB Pressure Profile visualizations
+- Percentile-based advanced trait analysis
+- Dynamic top-N filtering
 
 ---
 
@@ -205,12 +322,12 @@ Pipeline stages include:
 
 Primary scripts:
 
-* `scripts/extract_data.py`
-* `scripts/build_qb_metrics.py`
-* `scripts/cortisol_calculation.py`
-* `scripts/build_advanced_metrics.py`
-* `scripts/run_pipeline.py`
-* `scripts/load_to_postgres.py`
+- `scripts/extract_data.py`
+- `scripts/build_qb_metrics.py`
+- `scripts/cortisol_calculation.py`
+- `scripts/build_advanced_metrics.py`
+- `scripts/run_pipeline.py`
+- `scripts/load_to_postgres.py`
 
 ---
 
@@ -235,12 +352,12 @@ The platform exposes quarterback analytics through a FastAPI backend service.
 
 Supported backend query functionality includes:
 
-* Season filtering
-* Season type filtering (`REG`, `POST`)
-* Team filtering
-* Pagination using `limit` and `offset`
-* Typed response validation with Pydantic schemas
-* Dynamic sorting using `sort_by` and `sort_order`
+- Season filtering
+- Season type filtering (`REG`, `POST`)
+- Team filtering
+- Pagination using `limit` and `offset`
+- Typed response validation with Pydantic schemas
+- Dynamic sorting using `sort_by` and `sort_order`
 
 ---
 
@@ -262,26 +379,45 @@ Supported backend query functionality includes:
 ```
 
 ---
+
 # Frontend-Backend Integration
 
-The Streamlit dashboard consumes data exclusively through FastAPI REST endpoints rather than directly accessing CSV datasets.
+The React frontend consumes data exclusively through FastAPI REST APIs using a reusable typed API client layer.
 
 This architecture introduces a clear separation between:
 
 - frontend presentation logic
 - backend business/query logic
 - database persistence
+- transformation and visualization logic
 
-The frontend communicates with the backend through a reusable API client layer that handles:
+The frontend architecture includes:
 
-- endpoint requests
-- pagination
-- query parameter construction
-- response parsing
-- API-driven data retrieval
+- reusable typed API clients
+- custom React hooks for data fetching
+- transformation utilities for visualization shaping
+- page-level orchestration components
+- reusable feature components
 
-This design improves scalability, maintainability, and portability while more closely mirroring modern full-stack software architectures.
+This design improves scalability, maintainability, portability, and frontend extensibility while more closely mirroring modern full-stack software architectures.
 
+---
+
+# Engineering Challenges Solved
+
+Key engineering problems addressed during development included:
+
+- Refactoring a monolithic frontend into reusable React architecture
+- Designing typed frontend-backend API contracts
+- Resolving client-side filtering inconsistencies caused by paginated API responses
+- Separating presentational and stateful React components
+- Building reusable visualization transformation utilities
+- Implementing modular backend query filtering and pagination
+- Managing Dockerized multi-service orchestration
+- Maintaining type-safe data flow across frontend and backend layers
+- Designing reusable comparison and analytics visualization systems
+
+---
 
 # Local Development Setup
 
@@ -316,9 +452,9 @@ docker compose up
 
 This launches:
 
-* FastAPI backend service
-* PostgreSQL database service
-* Streamlit dashboard service
+- React frontend
+- FastAPI backend service
+- PostgreSQL database service
 
 ---
 
@@ -346,10 +482,10 @@ python -m scripts.load_to_postgres
 http://localhost:8001/docs
 ```
 
-### Streamlit Dashboard
+### React Frontend
 
 ```text
-http://localhost:7860
+http://localhost:5173
 ```
 
 ---
@@ -360,13 +496,13 @@ The platform includes automated backend API tests using Pytest.
 
 Tests validate:
 
-* Endpoint availability
-* Query filtering
-* Pagination behavior
-* Invalid query handling
-* Response schema validation
-* Route integrity
-* Backend API contracts
+- endpoint availability
+- query filtering
+- pagination behavior
+- invalid query handling
+- response schema validation
+- route integrity
+- backend API contracts
 
 Run tests locally:
 
@@ -374,9 +510,13 @@ Run tests locally:
 python -m pytest
 ```
 
-GitHub Actions workflows automatically execute tests on pushes and pull requests to help ensure backend stability and reliability.
+Frontend builds are validated using:
 
-The backend API layer includes automated validation for filtering, pagination, sorting, and response contracts using FastAPI query validation and Pydantic schemas.
+```bash
+npm run build
+```
+
+GitHub Actions workflows automatically execute tests and validation checks on pushes and pull requests to help ensure backend and frontend stability.
 
 ---
 
@@ -384,13 +524,13 @@ The backend API layer includes automated validation for filtering, pagination, s
 
 The project uses Docker Compose to orchestrate a multi-service local development environment consisting of:
 
-* FastAPI backend service
-* PostgreSQL database service
-* Streamlit dashboard service
+- React frontend service
+- FastAPI backend service
+- PostgreSQL database service
 
 Mounted Docker volumes enable hot-reload development workflows while preserving PostgreSQL data persistence.
 
-Docker Compose networking enables internal service-to-service communication between the Streamlit frontend, FastAPI backend, and PostgreSQL database containers.
+Docker Compose networking enables internal service-to-service communication between the frontend, backend, and PostgreSQL database containers.
 
 Run the full stack locally:
 
@@ -418,14 +558,16 @@ https://nflreadr.nflverse.com/index.html
 
 Planned future enhancements include:
 
-* React + TypeScript frontend migration leveraging existing FastAPI backend APIs
-* AWS cloud deployment
-* Redis/API caching layer
-* Authentication and user accounts
-* Advanced analytics filtering and sorting
-* AI-generated QB scouting summaries
-* CI/CD deployment automation
-* Observability and logging infrastructure
+- AWS cloud deployment
+- Redis/API caching layer
+- Authentication and user accounts
+- React Query/TanStack Query integration
+- Advanced observability and logging
+- CI/CD deployment automation
+- Player-specific analytics pages
+- AI-generated QB scouting summaries
+- Infrastructure monitoring and metrics
+- Advanced frontend testing
 
 ---
 
@@ -433,12 +575,22 @@ Planned future enhancements include:
 
 The NFL QB Cortisol Index evolved from a sports analytics dashboard into a modular full-stack analytics platform combining:
 
-* Backend API engineering
-* Database architecture
-* Containerized infrastructure
-* Automated testing
-* Queryable analytics services
-* Interactive frontend visualization
-* Data engineering pipelines
+- frontend engineering
+- backend API engineering
+- database architecture
+- containerized infrastructure
+- automated testing
+- queryable analytics services
+- interactive visualization systems
+- data engineering pipelines
 
-The project demonstrates modern software engineering concepts including service-oriented backend architecture, typed API contracts, infrastructure orchestration, environment-based configuration management, and scalable analytics system design.
+The project demonstrates modern software engineering concepts including:
+
+- service-oriented backend architecture
+- typed frontend-backend API contracts
+- modular React frontend architecture
+- reusable transformation layers
+- infrastructure orchestration
+- environment-based configuration management
+- scalable analytics system design
+- interactive data visualization engineering
