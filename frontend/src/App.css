@@ -355,6 +355,10 @@ body {
   overflow-x: auto;
 }
 
+.comparison-section + .advanced-chart {
+  margin-top: 2rem;
+}
+
 .advanced-chart p {
   margin: 0 0 1rem;
   font-weight: 600;
