@@ -1,10 +1,6 @@
-streamlit
 pandas
 fastapi
 numpy
-plotly
-altair
-Pillow
 matplotlib
 uvicorn
 httpx

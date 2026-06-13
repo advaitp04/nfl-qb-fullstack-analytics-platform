@@ -6,7 +6,9 @@ The NFL QB Cortisol Index is a full-stack sports analytics platform designed to 
 
 The platform computes a custom QB Cortisol Index, a composite metric engineered to measure how effectively quarterbacks sustain drives, avoid stress-inducing mistakes, and maintain offensive efficiency across multiple NFL seasons.
 
-Originally developed as a sports analytics dashboard, the project evolved into a modular full-stack analytics platform featuring:
+Originally developed as a sports analytics dashboard, the platform evolved into a production-style full-stack analytics system featuring modular frontend architecture, typed backend APIs, containerized infrastructure, and automated CI validation.
+
+Major platform capabilities include:
 
 - FastAPI backend APIs
 - PostgreSQL integration
@@ -23,15 +25,15 @@ The project combines sports analytics, backend engineering, frontend architectur
 
 ---
 
-# Live Dashboard
+# Live Deployment
 
-[![Live Dashboard](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-blue)](https://advait-patil-nfl-qb-cortisol-analytics.streamlit.app/)
+Frontend and backend deployment links will be added after production deployment.
 
 ---
 
 # Software Engineering Upgrade
 
-The project was expanded from a standalone analytics notebook/dashboard into a modular full-stack analytics platform with production-style backend and frontend architecture.
+The project was expanded from a standalone analytics dashboard into a modular full-stack analytics platform with production-style backend and frontend architecture.
 
 Major engineering-focused additions include:
 
@@ -56,6 +58,23 @@ Major engineering-focused additions include:
 - Multi-page analytics dashboards
 
 These upgrades significantly improved the platform’s scalability, maintainability, portability, developer experience, and production-readiness.
+
+---
+
+# Key Engineering Concepts
+
+This project demonstrates:
+
+- Typed frontend-backend API contracts
+- Stateful vs. presentational React component separation
+- Custom React hook architecture
+- Service-layer backend architecture
+- Query filtering and pagination systems
+- Dockerized multi-service infrastructure
+- Container build optimization and service isolation
+- CI-based automated validation
+- Distributed local development workflows
+- Reusable transformation and visualization layers
 
 ---
 
@@ -187,10 +206,6 @@ The frontend architecture separates:
 
 to improve maintainability, scalability, and developer experience as the platform grows.
 
----
-
-# Modern React Frontend Architecture
-
 The frontend was refactored from a monolithic dashboard structure into a modular React + TypeScript architecture featuring:
 
 - Feature-based React component organization
@@ -267,7 +282,9 @@ nfl-qb-cortisol-analytics/
 ├── images/                     # Dashboard screenshots
 ├── .github/workflows/          # CI workflows
 ├── Dockerfile.api              # FastAPI backend container
+├── Dockerfile.frontend         # React frontend container
 ├── docker-compose.yml          # Multi-container orchestration
+├── .dockerignore
 ├── requirements.txt
 ├── .env.example
 └── README.md
@@ -337,14 +354,14 @@ The platform exposes quarterback analytics through a FastAPI backend service.
 
 ## Available Endpoints
 
-| Endpoint                     | Description                              |
-| ---------------------------- | ---------------------------------------- |
-| `GET /`                      | API status check                         |
-| `GET /api/health`            | Backend health check                     |
-| `GET /api/qbs`               | Retrieve quarterback records             |
-| `GET /api/qbs/{name}`        | Retrieve quarterback data by player name |
-| `GET /api/rankings/cortisol` | Retrieve QB Cortisol rankings            |
-| `GET /api/advanced-metrics`  | Retrieve advanced QB analytics           |
+| Endpoint | Description |
+|---|---|
+| `GET /` | API status check |
+| `GET /api/health` | Backend health check |
+| `GET /api/qbs` | Retrieve quarterback records |
+| `GET /api/qbs/{name}` | Retrieve quarterback data by player name |
+| `GET /api/rankings/cortisol` | Retrieve QB Cortisol rankings |
+| `GET /api/advanced-metrics` | Retrieve advanced QB analytics |
 
 ---
 
@@ -414,6 +431,7 @@ Key engineering problems addressed during development included:
 - Building reusable visualization transformation utilities
 - Implementing modular backend query filtering and pagination
 - Managing Dockerized multi-service orchestration
+- Optimizing Docker build contexts and container layer caching
 - Maintaining type-safe data flow across frontend and backend layers
 - Designing reusable comparison and analytics visualization systems
 
@@ -428,8 +446,6 @@ git clone https://github.com/advaitp04/nfl-qb-cortisol-analytics.git
 cd nfl-qb-cortisol-analytics
 ```
 
----
-
 ## 2. Configure Environment Variables
 
 Create a `.env` file in the project root.
@@ -438,16 +454,15 @@ Example:
 
 ```env
 DATABASE_URL=postgresql://postgres:password@localhost:5433/nfl_cortisol
+VITE_API_BASE_URL=http://localhost:8001
 ```
 
 A sample `.env.example` file is included for local development setup.
 
----
-
 ## 3. Launch Full Stack
 
 ```bash
-docker compose up
+docker compose up --build
 ```
 
 This launches:
@@ -456,23 +471,17 @@ This launches:
 - FastAPI backend service
 - PostgreSQL database service
 
----
-
 ## 4. Run Data Pipeline
 
 ```bash
 python -m scripts.run_pipeline
 ```
 
----
-
 ## 5. Load Data into PostgreSQL
 
 ```bash
 python -m scripts.load_to_postgres
 ```
-
----
 
 ## 6. Access Services
 
@@ -504,19 +513,20 @@ Tests validate:
 - route integrity
 - backend API contracts
 
-Run tests locally:
+Run backend tests locally:
 
 ```bash
 python -m pytest
 ```
 
-Frontend builds are validated using:
+Validate the frontend production build locally:
 
 ```bash
+cd frontend
 npm run build
 ```
 
-GitHub Actions workflows automatically execute tests and validation checks on pushes and pull requests to help ensure backend and frontend stability.
+GitHub Actions workflows automatically execute backend tests and frontend build validation on pushes and pull requests to help ensure application stability and deployment readiness.
 
 ---
 
@@ -528,6 +538,14 @@ The project uses Docker Compose to orchestrate a multi-service local development
 - FastAPI backend service
 - PostgreSQL database service
 
+The Docker setup includes:
+
+- isolated frontend/backend services
+- scoped Docker build contexts
+- optimized container layer caching
+- persistent PostgreSQL Docker volumes
+- multi-service Docker Compose orchestration
+
 Mounted Docker volumes enable hot-reload development workflows while preserving PostgreSQL data persistence.
 
 Docker Compose networking enables internal service-to-service communication between the frontend, backend, and PostgreSQL database containers.
@@ -535,7 +553,7 @@ Docker Compose networking enables internal service-to-service communication betw
 Run the full stack locally:
 
 ```bash
-docker compose up
+docker compose up --build
 ```
 
 ---
