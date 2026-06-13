@@ -140,7 +140,15 @@ function AdvancedQbComparisonSection({ records }: Props) {
   const qb2Record = findRecordByName(records, qb2);
 
   if (!qb1Record || !qb2Record) {
-    return null;
+    return (
+      <section className="comparison-section">
+        <h2>Advanced QB Comparison</h2>
+        <AlertMessage
+          tone="info"
+          message="Choose two quarterbacks to view the advanced comparison."
+        />
+      </section>
+    );
   }
 
   const qb1Metrics = toMetrics(qb1Record);

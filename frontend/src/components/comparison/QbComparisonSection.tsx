@@ -44,7 +44,15 @@ function QbComparisonSection({
   const qb2Record = findQbByName(qbs, qb2);
 
   if (!qb1Record || !qb2Record) {
-    return null;
+    return (
+      <section className="comparison-section">
+        <h2>QB Comparison</h2>
+        <AlertMessage
+          tone="info"
+          message="Choose two quarterbacks to view the comparison."
+        />
+      </section>
+    );
   }
 
   const qb1Metrics = toComparisonMetrics(qb1Record);

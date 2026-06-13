@@ -1,5 +1,6 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
 import { toPercentage } from "../../utils/metricFormatters";
+import AlertMessage from "../ui/AlertMessage";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -14,6 +15,18 @@ const PLOT_BOTTOM = 44;
 const PLOT_LEFT = 190;
 
 function ThirdDownPerformanceChart({ records, topN }: Props) {
+  if (records.length === 0) {
+    return (
+      <section className="advanced-chart">
+        <h2>3rd Down Performance Leaders</h2>
+        <AlertMessage
+          tone="info"
+          message="No quarterbacks are available for the third down chart with the current filters."
+        />
+      </section>
+    );
+  }
+
   const leaders = [...records]
     .sort(
       (a, b) =>

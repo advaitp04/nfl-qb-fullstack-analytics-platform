@@ -68,6 +68,12 @@ function AdvancedMetricsPage() {
     <>
       {loading && <LoadingState />}
       {error && <ErrorState message={error} />}
+      {!loading && !error && filteredRecords.length === 0 && (
+        <AlertMessage
+          tone="warning"
+          message="No quarterbacks match the current advanced metrics filters. Try lowering the minimum dropbacks or choosing a different season."
+        />
+      )}
 
       {!loading && !error && filteredRecords.length > 0 && (
         <>

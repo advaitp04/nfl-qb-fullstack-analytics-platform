@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import QbSelect from "../comparison/QbSelect";
+import AlertMessage from "../ui/AlertMessage";
 import type { AdvancedMetricsRecord } from "../../types/api";
 
 type Props = {
@@ -127,13 +128,29 @@ function QbPressureProfile({ records }: Props) {
   }, [qbNames]);
 
   if (records.length === 0 || qbNames.length === 0) {
-    return null;
+    return (
+      <section className="advanced-chart">
+        <h2>QB Pressure Profile</h2>
+        <AlertMessage
+          tone="info"
+          message="No quarterbacks are available for the pressure profile with the current filters."
+        />
+      </section>
+    );
   }
 
   const selectedRecord = findRecordByName(records, selectedQb);
 
   if (!selectedRecord) {
-    return null;
+    return (
+      <section className="advanced-chart">
+        <h2>QB Pressure Profile</h2>
+        <AlertMessage
+          tone="info"
+          message="Choose a quarterback to view a pressure profile."
+        />
+      </section>
+    );
   }
 
   const rows = buildProfileRows(records, selectedRecord);
