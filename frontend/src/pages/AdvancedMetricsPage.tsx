@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import AdvancedMetricsFilterPanel from "../components/advanced/AdvancedMetricsFilterPanel";
 import AdvancedMetricsInfoAccordion from "../components/advanced/AdvancedMetricsInfoAccordion";
 import AdvancedQbComparisonSection from "../components/advanced/AdvancedQbComparisonSection";
+import QbPressureProfile from "../components/advanced/QbPressureProfile";
 import RedzoneTdLeadersChart from "../components/advanced/RedzoneTdLeadersChart";
 import ThirdDownPerformanceChart from "../components/advanced/ThirdDownPerformanceChart";
 import VolatilityEfficiencyChart from "../components/advanced/VolatilityEfficiencyChart";
@@ -75,6 +76,7 @@ function AdvancedMetricsPage() {
           <AdvancedQbComparisonSection records={filteredRecords} />
           <RedzoneTdLeadersChart records={filteredRecords} topN={topN} />
           <ThirdDownPerformanceChart records={filteredRecords} topN={topN} />
+          <QbPressureProfile records={filteredRecords} />
         </>
       )}
     </>
