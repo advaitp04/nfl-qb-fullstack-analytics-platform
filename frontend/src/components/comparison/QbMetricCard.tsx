@@ -1,4 +1,5 @@
 import type { QbComparisonMetrics } from "../../utils/qbTransformations";
+import { formatNumber } from "../../utils/metricFormatters";
 
 type Props = {
   metrics: QbComparisonMetrics;
@@ -25,12 +26,12 @@ function QbMetricCard({ metrics, scoreDelta }: Props) {
 
       <div className="qb-metric-card__metric">
         <span className="qb-metric-card__label">Stabilized Rank</span>
-        <strong>{metrics.stabilizedRank}</strong>
+        <strong>{formatNumber(metrics.stabilizedRank)}</strong>
       </div>
 
       <div className="qb-metric-card__metric">
         <span className="qb-metric-card__label">Dropbacks</span>
-        <strong>{metrics.dropbacks}</strong>
+        <strong>{formatNumber(metrics.dropbacks)}</strong>
       </div>
     </article>
   );

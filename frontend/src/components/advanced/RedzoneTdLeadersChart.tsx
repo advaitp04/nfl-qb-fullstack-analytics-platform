@@ -1,5 +1,9 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
-import { toPercentage } from "../../utils/metricFormatters";
+import {
+  formatNumber,
+  formatPercentage,
+  toPercentage,
+} from "../../utils/metricFormatters";
 import AlertMessage from "../ui/AlertMessage";
 
 type Props = {
@@ -90,12 +94,12 @@ function RedzoneTdLeadersChart({ records, topN }: Props) {
                 strokeWidth="1"
               />
               <text x={PLOT_LEFT + barWidth + 8} y={y + 21}>
-                {leader.rate.toFixed(1)}%
+                {formatPercentage(leader.rate)}
               </text>
               <title>
-                {`${leader.name} (${leader.team}) — Redzone TD Rate: ${leader.rate.toFixed(
-                  1
-                )}%, Dropbacks: ${leader.dropbacks}`}
+                {`${leader.name} (${leader.team}) — Redzone TD Rate: ${formatPercentage(
+                  leader.rate
+                )}, Dropbacks: ${formatNumber(leader.dropbacks)}`}
               </title>
             </g>
           );

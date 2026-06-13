@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { LeaderboardRow } from "../../utils/qbTransformations";
 import { scoreToGradientColor } from "../../utils/qbTransformations";
+import { formatNumber } from "../../utils/metricFormatters";
 
 type Props = {
   rows: LeaderboardRow[];
@@ -170,7 +171,7 @@ function LeaderboardTable({ rows }: Props) {
         <tbody>
           {displayRows.map((row) => (
             <tr key={`${row.qbName}-${row.stabilizedRank}`}>
-              <td>{row.stabilizedRank}</td>
+              <td>{formatNumber(row.stabilizedRank)}</td>
               <td>{row.qbName}</td>
               <td>{row.team}</td>
               <td
@@ -191,7 +192,7 @@ function LeaderboardTable({ rows }: Props) {
               >
                 {row.cortisolScore.toFixed(1)}
               </td>
-              <td>{row.dropbacks}</td>
+              <td>{formatNumber(row.dropbacks)}</td>
               <td
                 style={{
                   backgroundColor: scoreToGradientColor(
@@ -200,14 +201,14 @@ function LeaderboardTable({ rows }: Props) {
                   ),
                 }}
               >
-                {row.turnoverScore.toFixed(3)}
+                {row.turnoverScore.toFixed(1)}
               </td>
               <td
                 style={{
                   backgroundColor: scoreToGradientColor(row.driveScore, "blue"),
                 }}
               >
-                {row.driveScore.toFixed(3)}
+                {row.driveScore.toFixed(1)}
               </td>
               <td
                 style={{
@@ -217,9 +218,9 @@ function LeaderboardTable({ rows }: Props) {
                   ),
                 }}
               >
-                {row.successScore.toFixed(3)}
+                {row.successScore.toFixed(1)}
               </td>
-              <td>{row.rank}</td>
+              <td>{formatNumber(row.rank)}</td>
             </tr>
           ))}
         </tbody>

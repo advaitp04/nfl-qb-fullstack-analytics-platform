@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import QbSelect from "../comparison/QbSelect";
 import AlertMessage from "../ui/AlertMessage";
 import type { AdvancedMetricsRecord } from "../../types/api";
+import { formatPercentile } from "../../utils/metricFormatters";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -216,10 +217,10 @@ function QbPressureProfile({ records }: Props) {
                 fill={`hsl(210, 76%, ${lightness}%)`}
               />
               <text x={PLOT_LEFT + barWidth + 8} y={y + 21}>
-                {row.percentile}th
+                {formatPercentile(row.percentile)}
               </text>
               <title>
-                {`${row.trait}: ${row.percentile}th percentile`}
+                {`${row.trait}: ${formatPercentile(row.percentile, true)}`}
               </title>
             </g>
           );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import QbSelect from "../comparison/QbSelect";
 import AlertMessage from "../ui/AlertMessage";
 import type { AdvancedMetricsRecord } from "../../types/api";
+import { formatNumber } from "../../utils/metricFormatters";
 
 type Props = {
   records: AdvancedMetricsRecord[];
@@ -352,12 +353,12 @@ function AdvancedMetricCard({
 
       <div className="qb-metric-card__metric">
         <span className="qb-metric-card__label">Stabilized Rank</span>
-        <strong>{metrics.stabilizedRank}</strong>
+        <strong>{formatNumber(metrics.stabilizedRank)}</strong>
       </div>
 
       <div className="qb-metric-card__metric">
         <span className="qb-metric-card__label">Dropbacks</span>
-        <strong>{metrics.dropbacks}</strong>
+        <strong>{formatNumber(metrics.dropbacks)}</strong>
       </div>
     </article>
   );

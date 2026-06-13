@@ -1,5 +1,8 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
-import { toPercentage } from "../../utils/metricFormatters";
+import {
+  formatPercentage,
+  toPercentage,
+} from "../../utils/metricFormatters";
 import AlertMessage from "../ui/AlertMessage";
 
 type Props = {
@@ -191,12 +194,8 @@ function VolatilityEfficiencyChart({ records }: Props) {
               <title>
                 {`Player: ${point.name}
 Team: ${point.team}
-Negative EPA Rate: ${point.negativeEpaRate.toFixed(
-                  1
-                )}%
-Panic Play Rate: ${point.panicPlayRate.toFixed(
-                  1
-                )}%
+Negative EPA Rate: ${formatPercentage(point.negativeEpaRate)}
+Panic Play Rate: ${formatPercentage(point.panicPlayRate)}
 Stabilized Cortisol Rating: ${point.stabilizedCortisolRating.toFixed(
                   1
                 )}`}

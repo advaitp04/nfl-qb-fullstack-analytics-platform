@@ -1,5 +1,9 @@
 import type { AdvancedMetricsRecord } from "../../types/api";
-import { toPercentage } from "../../utils/metricFormatters";
+import {
+  formatNumber,
+  formatPercentage,
+  toPercentage,
+} from "../../utils/metricFormatters";
 import AlertMessage from "../ui/AlertMessage";
 
 type Props = {
@@ -125,14 +129,14 @@ function ThirdDownPerformanceChart({ records, topN }: Props) {
                 strokeWidth="1"
               />
               <text x={PLOT_LEFT + regularWidth + 8} y={y + 24}>
-                {leader.regularRate.toFixed(1)}%
+                {formatPercentage(leader.regularRate)}
               </text>
               <title>
-                {`${leader.name} (${leader.team}) — Regular 3rd Down: ${leader.regularRate.toFixed(
-                  1
-                )}%, 3rd & Long: ${leader.longRate.toFixed(
-                  1
-                )}%, Dropbacks: ${leader.dropbacks}`}
+                {`${leader.name} (${leader.team}) — Regular 3rd Down: ${formatPercentage(
+                  leader.regularRate
+                )}, 3rd & Long: ${formatPercentage(
+                  leader.longRate
+                )}, Dropbacks: ${formatNumber(leader.dropbacks)}`}
               </title>
             </g>
           );
