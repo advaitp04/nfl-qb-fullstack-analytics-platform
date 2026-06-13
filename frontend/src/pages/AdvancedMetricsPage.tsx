@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import AdvancedMetricsFilterPanel from "../components/advanced/AdvancedMetricsFilterPanel";
 import AdvancedMetricsInfoAccordion from "../components/advanced/AdvancedMetricsInfoAccordion";
+import AdvancedQbComparisonSection from "../components/advanced/AdvancedQbComparisonSection";
 import VolatilityEfficiencyChart from "../components/advanced/VolatilityEfficiencyChart";
 import AppHeader from "../components/layout/AppHeader";
 import PageLayout from "../components/layout/PageLayout";
@@ -69,6 +70,7 @@ function AdvancedMetricsPage() {
         <>
           <AdvancedMetricsInfoAccordion />
           <VolatilityEfficiencyChart records={filteredRecords} />
+          <AdvancedQbComparisonSection records={filteredRecords} />
         </>
       )}
     </>

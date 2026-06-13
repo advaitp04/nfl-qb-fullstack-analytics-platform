@@ -343,6 +343,10 @@ body {
   height: auto;
 }
 
+.advanced-qb-score-chart svg {
+  min-width: 820px;
+}
+
 .advanced-chart {
   margin: 0;
   padding: 1.25rem;
@@ -402,6 +406,10 @@ body {
 
   .qb-score-chart svg {
     min-width: 480px;
+  }
+
+  .advanced-qb-score-chart svg {
+    min-width: 720px;
   }
 
   .advanced-chart svg {
