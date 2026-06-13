@@ -3,6 +3,7 @@ import AdvancedMetricsFilterPanel from "../components/advanced/AdvancedMetricsFi
 import AdvancedMetricsInfoAccordion from "../components/advanced/AdvancedMetricsInfoAccordion";
 import AdvancedQbComparisonSection from "../components/advanced/AdvancedQbComparisonSection";
 import RedzoneTdLeadersChart from "../components/advanced/RedzoneTdLeadersChart";
+import ThirdDownPerformanceChart from "../components/advanced/ThirdDownPerformanceChart";
 import VolatilityEfficiencyChart from "../components/advanced/VolatilityEfficiencyChart";
 import AppHeader from "../components/layout/AppHeader";
 import PageLayout from "../components/layout/PageLayout";
@@ -73,6 +74,7 @@ function AdvancedMetricsPage() {
           <VolatilityEfficiencyChart records={filteredRecords} />
           <AdvancedQbComparisonSection records={filteredRecords} />
           <RedzoneTdLeadersChart records={filteredRecords} topN={topN} />
+          <ThirdDownPerformanceChart records={filteredRecords} topN={topN} />
         </>
       )}
     </>

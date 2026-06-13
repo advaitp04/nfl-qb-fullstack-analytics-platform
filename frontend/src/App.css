@@ -359,6 +359,10 @@ body {
   margin-top: 2rem;
 }
 
+.advanced-chart + .advanced-chart {
+  margin-top: 2rem;
+}
+
 .advanced-chart p {
   margin: 0 0 1rem;
   font-weight: 600;
