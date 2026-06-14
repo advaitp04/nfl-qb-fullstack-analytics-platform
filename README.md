@@ -2,32 +2,38 @@
 
 ## Introduction
 
-The NFL QB Cortisol Index is a full-stack sports analytics platform designed to evaluate quarterback stability, offensive consistency, and situational performance using NFL player statistics and play-by-play data.
+The NFL QB Cortisol Index is a production-deployed full-stack sports analytics platform designed to evaluate quarterback stability, offensive consistency, and situational performance using NFL player statistics and play-by-play data.
 
 The platform computes a custom QB Cortisol Index, a composite metric engineered to measure how effectively quarterbacks sustain drives, avoid stress-inducing mistakes, and maintain offensive efficiency across multiple NFL seasons.
 
-Originally developed as a sports analytics dashboard, the platform evolved into a production-style full-stack analytics system featuring modular frontend architecture, typed backend APIs, containerized infrastructure, and automated CI validation.
+Originally developed as a sports analytics dashboard, the platform evolved into a cloud-deployed production-style analytics system featuring:
 
-Major platform capabilities include:
-
+- React + TypeScript frontend architecture
 - FastAPI backend APIs
 - PostgreSQL integration
-- Dockerized multi-service infrastructure
-- Typed API contracts with Pydantic and TypeScript
-- React + TypeScript frontend architecture
-- Automated testing with Pytest
-- CI workflows with GitHub Actions
-- Query filtering, sorting, and pagination
-- Interactive analytics visualizations
-- Custom React hooks and reusable UI components
+- Dockerized infrastructure
+- AWS cloud deployment
+- ECS container orchestration
+- HTTPS/TLS-secured production services
+- Automated CI validation workflows
 
-The project combines sports analytics, backend engineering, frontend architecture, API design, infrastructure orchestration, and data engineering into a production-style analytics system.
+The project combines sports analytics, backend engineering, frontend architecture, API design, cloud infrastructure, DevOps, and data engineering into a modern full-stack analytics platform.
 
 ---
 
 # Live Deployment
 
-Frontend and backend deployment links will be added after production deployment.
+## Production Frontend
+
+https://www.nflcortisol.com
+
+## Production Backend API
+
+https://api.nflcortisol.com
+
+## API Documentation
+
+https://api.nflcortisol.com/docs
 
 ---
 
@@ -46,7 +52,7 @@ Major engineering-focused additions include:
 - Dockerized backend, database, and frontend services
 - Docker Compose orchestration for local multi-service development
 - Automated API testing with Pytest
-- GitHub Actions CI pipeline
+- GitHub Actions CI workflows
 - Environment-variable based configuration management
 - Reusable response helper utilities
 - Structured backend route organization
@@ -56,8 +62,11 @@ Major engineering-focused additions include:
 - Custom React hooks for data fetching and state management
 - Reusable transformation utilities for analytics visualizations
 - Multi-page analytics dashboards
+- Production AWS cloud deployment
+- ECS Fargate container orchestration
+- HTTPS/TLS-secured frontend and backend APIs
 
-These upgrades significantly improved the platform’s scalability, maintainability, portability, developer experience, and production-readiness.
+These upgrades significantly improved the platform’s scalability, maintainability, portability, developer experience, cloud readiness, and production reliability.
 
 ---
 
@@ -75,6 +84,12 @@ This project demonstrates:
 - CI-based automated validation
 - Distributed local development workflows
 - Reusable transformation and visualization layers
+- Cloud-native deployment architecture
+- HTTPS/TLS infrastructure
+- Container orchestration
+- DNS and networking configuration
+- Cloud security group isolation
+- Browser security concepts including CORS
 
 ---
 
@@ -165,10 +180,17 @@ The final QB Cortisol Index combines these normalized metrics into a composite s
 - Pytest
 - GitHub Actions
 
-## Infrastructure & Containerization
+## Cloud Infrastructure & Containerization
 
 - Docker
 - Docker Compose
+- AWS ECS Fargate
+- AWS ECR
+- AWS RDS
+- AWS Amplify
+- AWS ACM
+- AWS Application Load Balancer
+- Cloudflare DNS
 
 ## Version Control
 
@@ -206,29 +228,6 @@ The frontend architecture separates:
 
 to improve maintainability, scalability, and developer experience as the platform grows.
 
-The frontend was refactored from a monolithic dashboard structure into a modular React + TypeScript architecture featuring:
-
-- Feature-based React component organization
-- Typed frontend-backend API contracts
-- Reusable chart and visualization components
-- Custom React hooks for state and data fetching
-- Client/server-side filtering strategies
-- Interactive leaderboard sorting
-- Multi-page analytics dashboards
-- Shared transformation utilities
-- Stateful and presentational component separation
-- Modular page orchestration
-
-The architecture mirrors modern production frontend engineering practices by separating:
-
-- data fetching
-- business logic
-- state management
-- transformation logic
-- UI rendering
-
-into reusable and scalable layers.
-
 ---
 
 # System Architecture
@@ -251,6 +250,76 @@ Dockerized Multi-Service Infrastructure
 
 ---
 
+# Cloud Deployment Architecture
+
+The platform is deployed as a production-style cloud-native analytics system using AWS infrastructure and Cloudflare DNS.
+
+## Production Architecture
+
+```text
+User Browser
+↓
+Cloudflare DNS
+↓
+AWS Amplify
+↓
+React + TypeScript Frontend
+↓
+HTTPS API Requests
+↓
+AWS Application Load Balancer
+↓
+AWS ECS Fargate
+↓
+Dockerized FastAPI Backend
+↓
+AWS RDS PostgreSQL
+```
+
+## Cloud Infrastructure
+
+### Frontend Hosting
+- AWS Amplify
+- CloudFront CDN distribution
+- Custom domain integration
+- HTTPS/TLS termination
+
+### Backend Infrastructure
+- AWS ECS Fargate
+- Dockerized FastAPI containers
+- AWS ECR container registry
+- Application Load Balancer routing
+- Health check monitoring
+
+### Database Infrastructure
+- AWS RDS PostgreSQL
+- Private VPC networking
+- Security-group controlled access
+
+### Networking & Security
+- HTTPS/TLS certificates via AWS ACM
+- Cloudflare DNS routing
+- ECS/RDS security group isolation
+- FastAPI CORS allowlist configuration
+
+### Deployment Workflow
+
+```text
+Local Development
+↓
+Docker Image Build
+↓
+Push Image to AWS ECR
+↓
+Update ECS Task Definition
+↓
+Deploy ECS Service Revision
+↓
+ALB Routes Production Traffic
+```
+
+---
+
 # Repository Structure
 
 ```text
@@ -258,93 +327,37 @@ nfl-qb-cortisol-analytics/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── api/                # Typed frontend API client layer
-│   │   ├── components/         # Reusable UI + chart components
-│   │   ├── constants/          # Shared frontend constants
-│   │   ├── hooks/              # Custom React hooks
-│   │   ├── pages/              # Page-level orchestration
-│   │   ├── types/              # Frontend API contract types
-│   │   ├── utils/              # Shared transformation utilities
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── types/
+│   │   ├── utils/
 │   │   ├── App.tsx
 │   │   └── main.tsx
 │
 ├── backend/
-│   ├── db/                     # Database connection layer
-│   ├── models/                 # Pydantic response schemas
-│   ├── routes/                 # FastAPI route modules
-│   ├── services/               # Analytics/business logic layer
-│   ├── utils/                  # Shared backend utilities
-│   └── main.py                 # FastAPI application entrypoint
+│   ├── db/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   └── main.py
 │
-├── scripts/                    # Data pipeline scripts
-├── tests/                      # Automated backend API tests
-├── data/processed/             # Generated datasets
-├── images/                     # Dashboard screenshots
-├── .github/workflows/          # CI workflows
-├── Dockerfile.api              # FastAPI backend container
-├── Dockerfile.frontend         # React frontend container
-├── docker-compose.yml          # Multi-container orchestration
+├── scripts/
+├── tests/
+├── data/processed/
+├── images/
+├── .github/workflows/
+├── Dockerfile.api
+├── Dockerfile.frontend
+├── docker-compose.yml
 ├── .dockerignore
 ├── requirements.txt
 ├── .env.example
 └── README.md
 ```
-
----
-
-# Frontend Features
-
-## Home Dashboard
-
-The primary leaderboard dashboard includes:
-
-- Interactive QB Cortisol leaderboard
-- Dynamic filtering by:
-  - season
-  - season type
-  - minimum dropbacks
-- Client/server-side filtering integration
-- Interactive table sorting
-- Gradient-based score visualizations
-- QB comparison charts
-- Responsive UI components
-- Expandable methodology accordion
-
-## Advanced Metrics Dashboard
-
-The advanced analytics page includes:
-
-- QB Volatility vs. Efficiency visualization
-- Advanced QB comparison charts
-- Red Zone Passing TD Leaders
-- Third Down Performance Leaders
-- QB Pressure Profile visualizations
-- Percentile-based advanced trait analysis
-- Dynamic top-N filtering
-
----
-
-# Data Pipeline
-
-The analytics pipeline processes NFL player statistics and play-by-play datasets into a unified quarterback analytics dataset.
-
-Pipeline stages include:
-
-1. Extract NFL player statistics
-2. Aggregate QB performance metrics
-3. Calculate QB Cortisol scores
-4. Compute advanced situational metrics
-5. Generate unified analytics dataset
-6. Load analytics dataset into PostgreSQL
-
-Primary scripts:
-
-- `scripts/extract_data.py`
-- `scripts/build_qb_metrics.py`
-- `scripts/cortisol_calculation.py`
-- `scripts/build_advanced_metrics.py`
-- `scripts/run_pipeline.py`
-- `scripts/load_to_postgres.py`
 
 ---
 
@@ -362,78 +375,6 @@ The platform exposes quarterback analytics through a FastAPI backend service.
 | `GET /api/qbs/{name}` | Retrieve quarterback data by player name |
 | `GET /api/rankings/cortisol` | Retrieve QB Cortisol rankings |
 | `GET /api/advanced-metrics` | Retrieve advanced QB analytics |
-
----
-
-# API Query Features
-
-Supported backend query functionality includes:
-
-- Season filtering
-- Season type filtering (`REG`, `POST`)
-- Team filtering
-- Pagination using `limit` and `offset`
-- Typed response validation with Pydantic schemas
-- Dynamic sorting using `sort_by` and `sort_order`
-
----
-
-# Example API Response
-
-```json
-{
-  "count": 10,
-  "results": [
-    {
-      "player_display_name": "Patrick Mahomes",
-      "season": 2023,
-      "season_type": "REG",
-      "team": "KC",
-      "adjusted_cortisol_score": 0.6175
-    }
-  ]
-}
-```
-
----
-
-# Frontend-Backend Integration
-
-The React frontend consumes data exclusively through FastAPI REST APIs using a reusable typed API client layer.
-
-This architecture introduces a clear separation between:
-
-- frontend presentation logic
-- backend business/query logic
-- database persistence
-- transformation and visualization logic
-
-The frontend architecture includes:
-
-- reusable typed API clients
-- custom React hooks for data fetching
-- transformation utilities for visualization shaping
-- page-level orchestration components
-- reusable feature components
-
-This design improves scalability, maintainability, portability, and frontend extensibility while more closely mirroring modern full-stack software architectures.
-
----
-
-# Engineering Challenges Solved
-
-Key engineering problems addressed during development included:
-
-- Refactoring a monolithic frontend into reusable React architecture
-- Designing typed frontend-backend API contracts
-- Resolving client-side filtering inconsistencies caused by paginated API responses
-- Separating presentational and stateful React components
-- Building reusable visualization transformation utilities
-- Implementing modular backend query filtering and pagination
-- Managing Dockerized multi-service orchestration
-- Optimizing Docker build contexts and container layer caching
-- Maintaining type-safe data flow across frontend and backend layers
-- Designing reusable comparison and analytics visualization systems
 
 ---
 
@@ -456,8 +397,6 @@ Example:
 DATABASE_URL=postgresql://postgres:password@localhost:5433/nfl_cortisol
 VITE_API_BASE_URL=http://localhost:8001
 ```
-
-A sample `.env.example` file is included for local development setup.
 
 ## 3. Launch Full Stack
 
@@ -526,49 +465,35 @@ cd frontend
 npm run build
 ```
 
-GitHub Actions workflows automatically execute backend tests and frontend build validation on pushes and pull requests to help ensure application stability and deployment readiness.
+GitHub Actions workflows automatically execute backend tests and frontend build validation on pushes and pull requests.
+
+AWS Amplify automatically deploys frontend changes from connected GitHub branches.
+
+Backend ECS deployments are currently performed manually through Docker image pushes and ECS service updates, with full CI/CD deployment automation planned as a future enhancement.
 
 ---
 
-# Containerization
+# Engineering Challenges Solved
 
-The project uses Docker Compose to orchestrate a multi-service local development environment consisting of:
+Key engineering problems addressed during development included:
 
-- React frontend service
-- FastAPI backend service
-- PostgreSQL database service
-
-The Docker setup includes:
-
-- isolated frontend/backend services
-- scoped Docker build contexts
-- optimized container layer caching
-- persistent PostgreSQL Docker volumes
-- multi-service Docker Compose orchestration
-
-Mounted Docker volumes enable hot-reload development workflows while preserving PostgreSQL data persistence.
-
-Docker Compose networking enables internal service-to-service communication between the frontend, backend, and PostgreSQL database containers.
-
-Run the full stack locally:
-
-```bash
-docker compose up --build
-```
-
----
-
-# Data Source
-
-The project uses nflreadpy and nflverse datasets for NFL player statistics and play-by-play data analysis.
-
-## nflreadpy
-
-Installation:
-https://www.piwheels.org/project/nflreadpy/
-
-Documentation:
-https://nflreadr.nflverse.com/index.html
+- Refactoring a monolithic frontend into reusable React architecture
+- Designing typed frontend-backend API contracts
+- Resolving client-side filtering inconsistencies caused by paginated API responses
+- Separating presentational and stateful React components
+- Managing Dockerized multi-service orchestration
+- Optimizing Docker build contexts and layer caching
+- ECS service-linked IAM role configuration
+- ECR authentication and permissions
+- ARM64 vs AMD64 Docker image compatibility
+- ECS stale image deployments caused by reused `latest` tags
+- Application Load Balancer health check failures
+- RDS PostgreSQL connectivity and security group configuration
+- HTTPS mixed-content blocking
+- AWS ACM certificate validation and HTTPS listener setup
+- Cloudflare DNS configuration
+- FastAPI CORS policy debugging and browser preflight handling
+- Multi-service cloud networking and container orchestration
 
 ---
 
@@ -576,29 +501,32 @@ https://nflreadr.nflverse.com/index.html
 
 Planned future enhancements include:
 
-- AWS cloud deployment
+- Full CI/CD automation for ECS deployments
+- Infrastructure as Code using Terraform
 - Redis/API caching layer
 - Authentication and user accounts
 - React Query/TanStack Query integration
-- Advanced observability and logging
-- CI/CD deployment automation
+- Advanced observability and CloudWatch monitoring
+- Frontend integration testing
 - Player-specific analytics pages
 - AI-generated QB scouting summaries
-- Infrastructure monitoring and metrics
-- Advanced frontend testing
+- Real-time analytics pipelines
+- Autoscaling ECS services
+- Advanced predictive analytics
 
 ---
 
 # Summary
 
-The NFL QB Cortisol Index evolved from a sports analytics dashboard into a modular full-stack analytics platform combining:
+The NFL QB Cortisol Index evolved from a sports analytics dashboard into a production-style full-stack analytics platform combining:
 
 - frontend engineering
 - backend API engineering
 - database architecture
 - containerized infrastructure
+- cloud deployment
+- HTTPS/TLS networking
 - automated testing
-- queryable analytics services
 - interactive visualization systems
 - data engineering pipelines
 
@@ -609,6 +537,15 @@ The project demonstrates modern software engineering concepts including:
 - modular React frontend architecture
 - reusable transformation layers
 - infrastructure orchestration
-- environment-based configuration management
 - scalable analytics system design
+- cloud-native deployment workflows
 - interactive data visualization engineering
+
+---
+
+# Author
+
+Advait Patil
+
+- GitHub: https://github.com/advaitp04
+- LinkedIn: https://www.linkedin.com/in/advaitspatil/
